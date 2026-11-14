@@ -12,9 +12,9 @@ interface OverviewProps {
 }
 
 function readinessLabel(score: number): { text: string; color: string } {
-  if (score >= 70) return { text: 'Ready to apply', color: '#34d399' };
-  if (score >= 40) return { text: 'Building momentum', color: '#fbbf24' };
-  return { text: 'Early stage', color: '#d6c9a3' };
+  if (score >= 70) return { text: 'Ready to apply', color: 'var(--ok)' };
+  if (score >= 40) return { text: 'Building momentum', color: 'var(--warn)' };
+  return { text: 'Early stage', color: 'var(--accent-400)' };
 }
 
 /** Top band: who the learner is, how close they are to the goal, and what to do next. */

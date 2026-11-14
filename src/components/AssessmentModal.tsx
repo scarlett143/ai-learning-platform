@@ -150,7 +150,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                       >
                         <span
                           className={`h-4 w-4 rounded-full border flex items-center justify-center text-[10px] shrink-0 ${
-                            isSelected ? 'border-accent-400 bg-accent-400 text-stone-950' : 'border-muted-foreground'
+                            isSelected ? 'border-accent-400 bg-accent-400 text-on-accent' : 'border-muted-foreground'
                           }`}
                         >
                           {String.fromCharCode(65 + optIdx)}
@@ -187,14 +187,14 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
               <button
                 onClick={handleSubmit}
                 disabled={!allAnswered || isSubmitting}
-                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-50 text-stone-950 font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-50 text-on-accent font-semibold text-xs transition shadow-sm"
               >
                 Submit for Evaluation
               </button>
             ) : (
               <button
                 onClick={onClose}
-                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 text-on-accent font-semibold text-xs transition shadow-sm"
               >
                 Return to Roadmap
               </button>

@@ -114,7 +114,7 @@ export default function Home() {
   ] as const;
 
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col font-sans selection:bg-accent-500 selection:text-stone-950">
+    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col font-sans selection:bg-accent-500 selection:text-on-accent">
       <a href="#main" className="skip-link">Skip to main content</a>
       <Header
         currentRoleId={profile.targetRoleId}

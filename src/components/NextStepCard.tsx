@@ -46,7 +46,7 @@ export function NextStepCard({ roadmap, onStart }: NextStepCardProps) {
         {next && (
           <button
             onClick={() => onStart(next)}
-            className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-accent-400 hover:bg-accent-300 text-stone-950 text-sm font-semibold"
+            className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-accent-400 hover:bg-accent-300 text-on-accent text-sm font-semibold"
           >
             Take the quiz <ArrowRight className="h-4 w-4" />
           </button>

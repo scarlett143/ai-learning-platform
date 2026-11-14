@@ -192,7 +192,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                       disabled={isLocked}
                       className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-xs transition shadow-sm ${
                         isInProgress || isRemedial
-                          ? 'bg-accent-400 hover:bg-accent-300 text-stone-950 shadow-accent-500/20'
+                          ? 'bg-accent-400 hover:bg-accent-300 text-on-accent shadow-accent-500/20'
                           : isCompleted
                           ? 'bg-muted hover:bg-muted/80 text-foreground border border-border'
                           : 'bg-muted text-muted-foreground cursor-not-allowed'

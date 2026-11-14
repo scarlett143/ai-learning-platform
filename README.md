@@ -132,8 +132,8 @@ flowchart TD
 - Test runner powered by **Vitest** (`npm test`).
 
 ### ♿ Accessibility (a11y)
-- **High-Density Linear-Style UI**: Engineered with high-contrast text (`#f1efe6` on `#0e0f0d` canvas), clear focus rings, semantic HTML elements, and keyboard navigability.
-- **Restrained palette, non-color cues**: one sand accent on warm charcoal; green/amber/red are reserved for pass/warning/gap and always paired with text or icons. Agents are told apart by name and icon, not hue. Skip link, visible focus ring, `prefers-reduced-motion` support, dialog roles and labelled controls.
+- **High-Density Linear-Style UI**: Engineered with high-contrast text (`#eceef2` on `#0c0e12` canvas in dark mode, `#14171c` on `#f6f7f9` in light mode), clear focus rings, semantic HTML elements, and keyboard navigability.
+- **Restrained palette, non-color cues**: one muted cobalt accent on cool neutrals, with a light/dark toggle (follows the system setting, remembers your choice); green/amber/red are reserved for pass/warning/gap and always paired with text or icons. Agents are told apart by name and icon, not hue. Skip link, visible focus ring, `prefers-reduced-motion` support, dialog roles and labelled controls.
 
 ### 🎯 Problem Statement Alignment
 - Demonstrates 100% of all required features, highlighting the exact sample scenario (Python + SQL + HTML student targeting Full Stack Developer) with adaptive remediation.

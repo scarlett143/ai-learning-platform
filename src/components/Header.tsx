@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { UserPlus } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 import { ALL_PRESETS } from '@/data/presets';
 
 interface HeaderProps {
@@ -16,8 +17,8 @@ export function Header({ currentRoleId, onSelectPreset, onOpenCustomModal }: Hea
       <div className="max-w-6xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
           <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0" role="img" aria-label="SkillBridge logo">
-            <rect width="32" height="32" rx="7" fill="#d6c9a3" />
-            <path d="M5 21h22M8 21c0-6 3.5-9 8-9s8 3 8 9M16 12V8" fill="none" stroke="#0e0f0d" strokeWidth="2.2" strokeLinecap="round" />
+            <rect width="32" height="32" rx="7" style={{ fill: 'var(--accent-400)' }} />
+            <path d="M5 21h22M8 21c0-6 3.5-9 8-9s8 3 8 9M16 12V8" fill="none" style={{ stroke: 'var(--on-accent)' }} strokeWidth="2.2" strokeLinecap="round" />
           </svg>
           <span className="text-base font-semibold tracking-tight text-foreground">SkillBridge</span>
         </div>
@@ -55,6 +56,8 @@ export function Header({ currentRoleId, onSelectPreset, onOpenCustomModal }: Hea
               ))}
             </select>
           </label>
+
+          <ThemeToggle />
 
           <button
             onClick={onOpenCustomModal}

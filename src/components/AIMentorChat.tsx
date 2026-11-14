@@ -143,7 +143,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
               <div
                 className={`p-3 rounded-lg max-w-[85%] leading-relaxed ${
                   isUser
-                    ? 'bg-accent-600 text-stone-950 rounded-tr-none'
+                    ? 'bg-accent-600 text-on-accent rounded-tr-none'
                     : 'bg-muted/50 border border-border text-foreground rounded-tl-none'
                 }`}
               >
@@ -194,7 +194,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
           type="submit"
           aria-label="Send message"
           disabled={!input.trim() || isStreaming}
-          className="p-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-40 text-stone-950 transition shadow-sm"
+          className="p-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-40 text-on-accent transition shadow-sm"
         >
           <Send className="h-4 w-4" />
         </button>

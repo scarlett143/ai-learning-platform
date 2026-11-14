@@ -124,7 +124,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold shadow-sm"
+              className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 text-on-accent font-semibold shadow-sm"
             >
               Initialize Profile & Roadmap
             </button>
