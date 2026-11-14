@@ -38,6 +38,11 @@ describe('Dual-Mode Storage Layer (Unit Tests)', () => {
       expect(retrieved?.skills[0].name).toBe('TypeScript');
     });
 
+    it('returns null when querying unseeded unknown user profile', async () => {
+      const nonExistent = await adapter.getProfile('unknown-random-user-id-999');
+      expect(nonExistent).toBeNull();
+    });
+
     it('saves and retrieves a roadmap', async () => {
       const roadmap: Roadmap = {
         id: 'roadmap-test-1',

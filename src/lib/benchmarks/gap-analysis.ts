@@ -52,7 +52,25 @@ export function isSkillMatch(userSkillName: string, reqSkillName: string): boole
   const r = reqSkillName.toLowerCase().trim();
 
   if (u === r) return true;
-  if (r.includes(u) || u.includes(r)) return true;
+
+  // Collision guards: distinct technologies that share substrings
+  if ((u === 'java' && r.includes('javascript')) || (r === 'java' && u.includes('javascript'))) {
+    return false;
+  }
+  if ((u === 'c' && (r === 'css' || r.includes('css'))) || (r === 'c' && (u === 'css' || u.includes('css')))) {
+    return false;
+  }
+  if ((u === 'act' && r.includes('react')) || (r === 'act' && u.includes('react'))) {
+    return false;
+  }
+
+  // Token-level matching (e.g. "sql" in "sql/databases", "html" in "html/css")
+  const uTokens = u.split(/[\/\&,\+\s]+/).map(t => t.trim()).filter(Boolean);
+  const rTokens = r.split(/[\/\&,\+\s]+/).map(t => t.trim()).filter(Boolean);
+
+  if (uTokens.some(ut => rTokens.includes(ut)) || rTokens.some(rt => uTokens.includes(rt))) {
+    return true;
+  }
 
   // Domain synonym checks
   const synonyms: Array<[RegExp, RegExp]> = [

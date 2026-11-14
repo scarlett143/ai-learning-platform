@@ -43,6 +43,9 @@ describe('Role Benchmarks & Gap Analysis Engine (Unit Tests)', () => {
       expect(isSkillMatch('node.js', 'Node.js')).toBe(true);
       expect(isSkillMatch('git', 'Git')).toBe(true);
       expect(isSkillMatch('Ruby', 'JavaScript')).toBe(false);
+      expect(isSkillMatch('Java', 'JavaScript')).toBe(false);
+      expect(isSkillMatch('C', 'CSS')).toBe(false);
+      expect(isSkillMatch('act', 'React')).toBe(false);
     });
   });
 

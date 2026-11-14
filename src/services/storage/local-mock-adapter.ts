@@ -107,8 +107,11 @@ export class LocalStorageMockAdapter implements IStorageAdapter {
     if (this.profiles.has(userId)) {
       return JSON.parse(JSON.stringify(this.profiles.get(userId)!));
     }
-    // Automatically initialize default profile for new learner sessions
-    return this.resetToPreset('preset-full-stack-transition', userId);
+    // Automatically initialize default profile only for canonical default user IDs
+    if (userId === 'default-user' || userId === 'alex-chen' || userId === 'current') {
+      return this.resetToPreset('preset-full-stack-transition', userId);
+    }
+    return null;
   }
 
   public async saveProfile(profile: LearnerProfile): Promise<void> {
