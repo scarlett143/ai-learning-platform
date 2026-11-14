@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { NextStepCard } from '@/components/NextStepCard';
 import { Header } from '@/components/Header';
 import { ProfileOverview } from '@/components/ProfileOverview';
 import { RoadmapView } from '@/components/RoadmapView';
@@ -120,6 +121,7 @@ export default function Home() {
       <main id="main" className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column (60%): Profile Overview + Visual Learning Roadmap */}
         <section className="lg:col-span-7 space-y-6">
+          <NextStepCard roadmap={roadmap} onStart={mod => setActiveQuizModule(mod)} />
           <ProfileOverview profile={profile} gapReport={gapReport} />
           <RoadmapView roadmap={roadmap} onTakeAssessment={mod => setActiveQuizModule(mod)} />
         </section>

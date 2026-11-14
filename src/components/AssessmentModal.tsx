@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useEscapeToClose } from '@/lib/use-dialog-close';
 import { X, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { RoadmapModule, QuizQuestion, AssessmentResult } from '@/types';
 import { AssessmentEvaluatorAgent } from '@/services/agents/assessment-evaluator';
@@ -26,6 +27,8 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
       setResult(null);
     }
   }, [module]);
+
+  useEscapeToClose(!!module, onClose);
 
   if (!module) return null;
 
@@ -53,7 +56,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
   const allAnswered = selectedAnswers.every(ans => ans !== -1);
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">

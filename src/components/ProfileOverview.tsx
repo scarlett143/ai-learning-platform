@@ -19,13 +19,11 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-foreground">{profile.name}</h2>
-            <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-muted-foreground font-mono">
-              ID: {profile.id.slice(0, 12)}
-            </span>
+            
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
             <Target className="h-3.5 w-3.5 text-accent-400" />
-            <span>Target Goal:</span>
+            <span>Working toward:</span>
             <span className="font-semibold text-foreground">{gapReport?.targetRoleName || profile.targetRoleId}</span>
           </div>
         </div>
@@ -33,7 +31,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
         {/* Readiness Meter */}
         <div className="flex items-center gap-3 bg-muted/50 px-3.5 py-2 rounded-xl border border-border">
           <div className="text-right">
-            <div className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Benchmark Readiness</div>
+            <div className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Role readiness</div>
             <div className="text-lg font-black text-foreground">{readiness}%</div>
           </div>
           <div className="w-16 bg-muted rounded-full h-2.5 overflow-hidden">
@@ -58,9 +56,9 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
               <AlertTriangle className="h-3.5 w-3.5" />
-              <span>Identified Skill Gaps ({gapReport?.missingSkills.length || 0})</span>
+              <span>Skills to learn ({gapReport?.missingSkills.length || 0})</span>
             </h3>
-            <span className="text-[10px] text-muted-foreground">Required for target role</span>
+            <span className="text-[10px] text-muted-foreground">Needed for this role</span>
           </div>
 
           <div className="space-y-1.5">
@@ -78,13 +76,13 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
                     </span>
                   </div>
                   <span className="text-[11px] font-mono font-medium text-amber-400">
-                    Needs: {gap.requiredProficiency}
+                    Target: {gap.requiredProficiency}
                   </span>
                 </div>
               ))
             ) : (
               <div className="p-3 text-xs text-muted-foreground italic bg-muted/30 rounded-xl">
-                Computing skill gaps with Skill Analyzer Agent...
+                Analyzing your skills...
               </div>
             )}
           </div>
@@ -95,9 +93,9 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5" />
-              <span>Existing Strengths ({profile.skills.length})</span>
+              <span>Skills you already have ({profile.skills.length})</span>
             </h3>
-            <span className="text-[10px] text-muted-foreground">Pre-existing competencies</span>
+            <span className="text-[10px] text-muted-foreground">Your starting point</span>
           </div>
 
           <div className="space-y-1.5">
@@ -130,7 +128,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
           {profile.certifications.map(c => (
             <div key={c.id} className="flex items-center gap-1.5">
               <Award className="h-3.5 w-3.5 text-accent-400" />
-              <span>Cert: <strong className="text-foreground">{c.name}</strong> ({c.issuer})</span>
+              <span>Certificate: <strong className="text-foreground">{c.name}</strong> ({c.issuer})</span>
             </div>
           ))}
           {profile.projects.map(p => (

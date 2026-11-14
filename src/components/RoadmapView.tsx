@@ -29,9 +29,9 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
     return (
       <div className="bg-card border border-border rounded-2xl p-8 text-center space-y-3">
         <Sparkles className="h-8 w-8 text-accent-400 mx-auto" />
-        <h3 className="text-sm font-semibold text-foreground">Curriculum Planner Agent Initializing</h3>
+        <h3 className="text-sm font-semibold text-foreground">Building your learning path</h3>
         <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-          Synthesizing personalized learning milestones based on your competency gap analysis...
+          Matching modules to the skills you still need...
         </p>
       </div>
     );
@@ -47,11 +47,11 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
       <div className="flex items-center justify-between px-1">
         <div>
           <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-            <span>Adaptive Learning Path</span>
-            <span className="text-xs font-normal text-muted-foreground">({roadmap.modules.length} Modules)</span>
+            <span>Your learning path</span>
+            <span className="text-xs font-normal text-muted-foreground">({roadmap.modules.length} modules)</span>
           </h2>
           <p className="text-xs text-muted-foreground">
-            Targeting: <strong className="text-foreground">{roadmap.targetRoleName}</strong>
+            Goal: <strong className="text-foreground">{roadmap.targetRoleName}</strong>
           </p>
         </div>
         <div className="text-xs text-muted-foreground">
@@ -83,7 +83,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
             >
               {/* Timeline Node Indicator on Left Line */}
               <div
-                className={`absolute -left-10 top-5 -transtone-x-1/2 h-7 w-7 rounded-full flex items-center justify-center border-2 bg-card ${
+                className={`absolute -left-10 top-5 -translate-x-1/2 h-7 w-7 rounded-full flex items-center justify-center border-2 bg-card ${
                   isRemedial
                     ? 'border-amber-400 text-amber-400'
                     : isInProgress
@@ -115,7 +115,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                     {isRemedial ? (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
-                        Adaptive Remediation Injected
+                        Review module added
                       </span>
                     ) : isCompleted ? (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -123,7 +123,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                       </span>
                     ) : isInProgress ? (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 border border-accent-500/20">
-                        Active Milestone
+                        Up next
                       </span>
                     ) : (
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
@@ -149,7 +149,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                   <div className="space-y-1.5">
                     <div className="font-semibold text-muted-foreground flex items-center gap-1.5">
                       <BookOpen className="h-3.5 w-3.5" />
-                      Curriculum Lessons:
+                      Lessons
                     </div>
                     <div className="grid grid-cols-1 gap-1 pl-5">
                       {mod.lessons.map(l => (
@@ -166,7 +166,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                     <div className="space-y-1.5">
                       <div className="font-semibold text-muted-foreground flex items-center gap-1.5">
                         <Code2 className="h-3.5 w-3.5 text-accent-400" />
-                        Code Architecture Sample:
+                        Example code
                       </div>
                       <div className="bg-stone-950 border border-border rounded-xl p-3 font-mono text-[11px] text-stone-200 overflow-x-auto">
                         <pre>{mod.codeSnippets[0].code}</pre>
@@ -177,7 +177,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                   {/* Practical Exercises */}
                   {mod.exercises && mod.exercises.length > 0 && (
                     <div className="p-2.5 rounded-xl bg-muted/40 border border-border space-y-1">
-                      <span className="font-semibold text-foreground">Practical Exercise:</span>
+                      <span className="font-semibold text-foreground">Practice exercise</span>
                       <p className="text-muted-foreground">{mod.exercises[0].prompt}</p>
                       {mod.exercises[0].solutionHint && (
                         <p className="text-[11px] text-amber-400 italic mt-1">Hint: {mod.exercises[0].solutionHint}</p>
@@ -199,7 +199,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                       }`}
                     >
                       <ClipboardCheck className="h-4 w-4" />
-                      <span>{isCompleted ? 'Retake Assessment' : 'Take Module Assessment'}</span>
+                      <span>{isCompleted ? 'Retake the quiz' : 'Take the quiz'}</span>
                     </button>
                   </div>
                 </div>
