@@ -113,12 +113,12 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="h-6 w-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <div className="h-6 w-6 rounded-lg bg-accent-500/20 text-accent-400 flex items-center justify-center">
             <Bot className="h-4 w-4" />
           </div>
           <div>
             <h3 className="text-xs font-bold text-foreground">AI Mentor Copilot</h3>
-            <span className="text-[10px] text-indigo-400">Collaborative Socratic Tutor</span>
+            <span className="text-[10px] text-accent-400">Collaborative Socratic Tutor</span>
           </div>
         </div>
         <span className="text-[10px] text-muted-foreground font-mono">Stream Provider: Active</span>
@@ -135,7 +135,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
             >
               <div
                 className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] shrink-0 ${
-                  isUser ? 'bg-cyan-500/20 text-cyan-400' : 'bg-indigo-500/20 text-indigo-400'
+                  isUser ? 'bg-accent-500/20 text-accent-400' : 'bg-accent-500/20 text-accent-400'
                 }`}
               >
                 {isUser ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
@@ -143,12 +143,12 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
               <div
                 className={`p-3 rounded-2xl max-w-[85%] leading-relaxed ${
                   isUser
-                    ? 'bg-cyan-600 text-white rounded-tr-none'
+                    ? 'bg-accent-600 text-stone-950 rounded-tr-none'
                     : 'bg-muted/50 border border-border text-foreground rounded-tl-none'
                 }`}
               >
                 {m.content || (
-                  <span className="inline-block animate-pulse text-indigo-400 font-mono">
+                  <span className="inline-block text-accent-400 font-mono">
                     Generating guidance...
                   </span>
                 )}
@@ -188,13 +188,13 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
           onChange={e => setInput(e.target.value)}
           placeholder="Ask a question or request study advice..."
           disabled={isStreaming}
-          className="flex-1 bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500 transition"
+          className="flex-1 bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-500 transition"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!input.trim() || isStreaming}
-          className="p-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white transition shadow-sm"
+          className="p-2 rounded-xl bg-accent-400 hover:bg-accent-300 disabled:opacity-40 text-stone-950 transition shadow-sm"
         >
           <Send className="h-4 w-4" />
         </button>

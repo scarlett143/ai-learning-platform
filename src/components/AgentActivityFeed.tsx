@@ -9,10 +9,10 @@ interface AgentActivityFeedProps {
 }
 
 const AGENT_BADGES: Record<AgentRoleName, { bg: string; text: string; border: string }> = {
-  'Skill Analyzer': { bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/20' },
-  'Curriculum Planner': { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20' },
-  'Assessment Evaluator': { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
-  'AI Mentor': { bg: 'bg-indigo-500/10', text: 'text-indigo-400', border: 'border-indigo-500/20' },
+  'Skill Analyzer': { bg: 'bg-accent-500/10', text: 'text-accent-400', border: 'border-accent-500/20' },
+  'Curriculum Planner': { bg: 'bg-accent-500/10', text: 'text-accent-400', border: 'border-accent-500/20' },
+  'Assessment Evaluator': { bg: 'bg-accent-500/10', text: 'text-accent-400', border: 'border-accent-500/20' },
+  'AI Mentor': { bg: 'bg-accent-500/10', text: 'text-accent-400', border: 'border-accent-500/20' },
 };
 
 export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
@@ -21,13 +21,13 @@ export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
-          <Terminal className="h-4 w-4 text-cyan-400" />
+          <Terminal className="h-4 w-4 text-accent-400" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
             Live Agent Collaboration Feed
           </h3>
         </div>
         <span className="flex items-center gap-1.5 text-[10px] text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           Live Event Bus
         </span>
       </div>

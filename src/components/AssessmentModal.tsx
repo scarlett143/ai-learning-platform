@@ -53,13 +53,13 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
   const allAnswered = selectedAnswers.every(ans => ans !== -1);
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-accent-500/10 text-accent-400 border border-accent-500/20">
                 Assessment Evaluator Agent
               </span>
               <span className="text-xs text-muted-foreground">Mastery Benchmark: 70%</span>
@@ -87,7 +87,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                   {result.passed ? (
                     <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                   ) : (
-                    <AlertTriangle className="h-5 w-5 text-amber-400 animate-pulse" />
+                    <AlertTriangle className="h-5 w-5 text-amber-400" />
                   )}
                   <span>
                     {result.passed
@@ -95,7 +95,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                       : `Score: ${result.score}% — Below 70% Benchmark`}
                   </span>
                 </div>
-                <span className="font-mono text-xs uppercase px-2 py-0.5 rounded bg-slate-950/40">
+                <span className="font-mono text-xs uppercase px-2 py-0.5 rounded bg-stone-950/40">
                   {result.passed ? 'Advance' : 'Remediation Active'}
                 </span>
               </div>
@@ -123,7 +123,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                 <div className="space-y-2">
                   {q.options.map((opt, optIdx) => {
                     const isSelected = selected === optIdx;
-                    let optionStyle = 'border-border bg-card/60 hover:border-cyan-500/40 text-foreground';
+                    let optionStyle = 'border-border bg-card/60 hover:border-accent-500/40 text-foreground';
 
                     if (result) {
                       if (optIdx === q.correctIndex) {
@@ -134,7 +134,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                         optionStyle = 'border-border opacity-50';
                       }
                     } else if (isSelected) {
-                      optionStyle = 'border-cyan-500 bg-cyan-500/15 text-cyan-300 font-semibold';
+                      optionStyle = 'border-accent-500 bg-accent-500/15 text-accent-300 font-semibold';
                     }
 
                     return (
@@ -147,7 +147,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                       >
                         <span
                           className={`h-4 w-4 rounded-full border flex items-center justify-center text-[10px] shrink-0 ${
-                            isSelected ? 'border-cyan-400 bg-cyan-400 text-slate-950' : 'border-muted-foreground'
+                            isSelected ? 'border-accent-400 bg-accent-400 text-stone-950' : 'border-muted-foreground'
                           }`}
                         >
                           {String.fromCharCode(65 + optIdx)}
@@ -184,14 +184,14 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
               <button
                 onClick={handleSubmit}
                 disabled={!allAnswered || isSubmitting}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 disabled:opacity-50 text-white font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-xl bg-accent-400 hover:bg-accent-300 disabled:opacity-50 text-stone-950 font-semibold text-xs transition shadow-sm"
               >
                 Submit for Evaluation
               </button>
             ) : (
               <button
                 onClick={onClose}
-                className="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-xl bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold text-xs transition shadow-sm"
               >
                 Return to Roadmap
               </button>

@@ -24,7 +24,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
-            <Target className="h-3.5 w-3.5 text-cyan-400" />
+            <Target className="h-3.5 w-3.5 text-accent-400" />
             <span>Target Goal:</span>
             <span className="font-semibold text-foreground">{gapReport?.targetRoleName || profile.targetRoleId}</span>
           </div>
@@ -43,7 +43,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
                   ? 'bg-emerald-500'
                   : readiness >= 40
                   ? 'bg-amber-500'
-                  : 'bg-cyan-500'
+                  : 'bg-accent-500'
               }`}
               style={{ width: `${Math.max(readiness, 5)}%` }}
             />
@@ -129,13 +129,13 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
         <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           {profile.certifications.map(c => (
             <div key={c.id} className="flex items-center gap-1.5">
-              <Award className="h-3.5 w-3.5 text-indigo-400" />
+              <Award className="h-3.5 w-3.5 text-accent-400" />
               <span>Cert: <strong className="text-foreground">{c.name}</strong> ({c.issuer})</span>
             </div>
           ))}
           {profile.projects.map(p => (
             <div key={p.id} className="flex items-center gap-1.5">
-              <FolderGit2 className="h-3.5 w-3.5 text-cyan-400" />
+              <FolderGit2 className="h-3.5 w-3.5 text-accent-400" />
               <span>Project: <strong className="text-foreground">{p.title}</strong></span>
             </div>
           ))}

@@ -28,7 +28,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
   if (!roadmap || !roadmap.modules || roadmap.modules.length === 0) {
     return (
       <div className="bg-card border border-border rounded-2xl p-8 text-center space-y-3">
-        <Sparkles className="h-8 w-8 text-cyan-400 mx-auto animate-pulse" />
+        <Sparkles className="h-8 w-8 text-accent-400 mx-auto" />
         <h3 className="text-sm font-semibold text-foreground">Curriculum Planner Agent Initializing</h3>
         <p className="text-xs text-muted-foreground max-w-sm mx-auto">
           Synthesizing personalized learning milestones based on your competency gap analysis...
@@ -55,7 +55,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
           </p>
         </div>
         <div className="text-xs text-muted-foreground">
-          Autonomous Progression & Remediation Active
+          Path adjusts automatically when a quiz score drops below 70%
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                 isRemedial
                   ? 'border-amber-500/40 bg-amber-500/5 shadow-md shadow-amber-500/5'
                   : isInProgress
-                  ? 'border-cyan-500/40 bg-card shadow-md shadow-cyan-500/5'
+                  ? 'border-accent-500/40 bg-card shadow-md shadow-accent-500/5'
                   : isCompleted
                   ? 'border-emerald-500/30 bg-card'
                   : 'border-border bg-card/60 opacity-80'
@@ -83,11 +83,11 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
             >
               {/* Timeline Node Indicator on Left Line */}
               <div
-                className={`absolute -left-10 top-5 -translate-x-1/2 h-7 w-7 rounded-full flex items-center justify-center border-2 bg-card ${
+                className={`absolute -left-10 top-5 -transtone-x-1/2 h-7 w-7 rounded-full flex items-center justify-center border-2 bg-card ${
                   isRemedial
                     ? 'border-amber-400 text-amber-400'
                     : isInProgress
-                    ? 'border-cyan-400 text-cyan-400 shadow-sm shadow-cyan-400/50'
+                    ? 'border-accent-400 text-accent-400 shadow-sm shadow-accent-400/50'
                     : isCompleted
                     ? 'border-emerald-400 bg-emerald-500/20 text-emerald-400'
                     : 'border-border text-muted-foreground'
@@ -96,7 +96,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                 {isCompleted ? (
                   <CheckCircle className="h-4 w-4" />
                 ) : isRemedial ? (
-                  <AlertTriangle className="h-4 w-4 text-amber-400 animate-pulse" />
+                  <AlertTriangle className="h-4 w-4 text-amber-400" />
                 ) : isInProgress ? (
                   <PlayCircle className="h-4 w-4" />
                 ) : (
@@ -122,7 +122,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                         Completed
                       </span>
                     ) : isInProgress ? (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 border border-accent-500/20">
                         Active Milestone
                       </span>
                     ) : (
@@ -165,10 +165,10 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                   {mod.codeSnippets && mod.codeSnippets.length > 0 && (
                     <div className="space-y-1.5">
                       <div className="font-semibold text-muted-foreground flex items-center gap-1.5">
-                        <Code2 className="h-3.5 w-3.5 text-cyan-400" />
+                        <Code2 className="h-3.5 w-3.5 text-accent-400" />
                         Code Architecture Sample:
                       </div>
-                      <div className="bg-slate-950 border border-border rounded-xl p-3 font-mono text-[11px] text-slate-200 overflow-x-auto">
+                      <div className="bg-stone-950 border border-border rounded-xl p-3 font-mono text-[11px] text-stone-200 overflow-x-auto">
                         <pre>{mod.codeSnippets[0].code}</pre>
                       </div>
                     </div>
@@ -192,7 +192,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                       disabled={isLocked}
                       className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs transition shadow-sm ${
                         isInProgress || isRemedial
-                          ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white shadow-cyan-500/20'
+                          ? 'bg-accent-400 hover:bg-accent-300 text-stone-950 shadow-accent-500/20'
                           : isCompleted
                           ? 'bg-muted hover:bg-muted/80 text-foreground border border-border'
                           : 'bg-muted text-muted-foreground cursor-not-allowed'

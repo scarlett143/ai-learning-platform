@@ -47,11 +47,11 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
   };
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="onboarding-title" className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="onboarding-title" className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div className="flex items-center gap-2">
-            <UserCheck className="h-4 w-4 text-cyan-400" />
+            <UserCheck className="h-4 w-4 text-accent-400" />
             <h2 id="onboarding-title" className="text-sm font-bold text-foreground">Custom Learner Onboarding</h2>
           </div>
           <button onClick={onClose} aria-label="Close onboarding" className="text-muted-foreground hover:text-foreground p-1 rounded-lg">
@@ -67,7 +67,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
-              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"
+              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-accent-500"
               required
             />
           </div>
@@ -78,7 +78,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
               id="learner-target"
               value={targetRoleId}
               onChange={e => setTargetRoleId(e.target.value)}
-              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"
+              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-accent-500"
             >
               <option value="fullstack-dev">Full Stack Developer</option>
               <option value="aiml-engineer">AI / Machine Learning Engineer</option>
@@ -95,7 +95,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
               value={skillsInput}
               onChange={e => setSkillsInput(e.target.value)}
               placeholder="e.g. Python, SQL, HTML, Docker"
-              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"
+              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-accent-500"
               required
             />
           </div>
@@ -106,7 +106,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
               id="learner-level"
               value={proficiency}
               onChange={e => setProficiency(e.target.value as ProficiencyLevel)}
-              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"
+              className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-accent-500"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -124,7 +124,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold shadow-sm"
+              className="px-5 py-2 rounded-xl bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold shadow-sm"
             >
               Initialize Profile & Roadmap
             </button>

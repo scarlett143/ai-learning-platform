@@ -132,8 +132,8 @@ flowchart TD
 - Test runner powered by **Vitest** (`npm test`).
 
 ### ♿ Accessibility (a11y)
-- **High-Density Linear-Style UI**: Engineered with high-contrast text (`#f8fafc` on `#090d16` canvas), clear focus rings, semantic HTML elements, and keyboard navigability.
-- **Color-Coded Agent Accents**: Cyan (Analyzer), Amber (Planner), Emerald (Evaluator), and Indigo (Mentor) combined with distinct icons and badges to avoid relying solely on color.
+- **High-Density Linear-Style UI**: Engineered with high-contrast text (`#f1efe6` on `#0e0f0d` canvas), clear focus rings, semantic HTML elements, and keyboard navigability.
+- **Restrained palette, non-color cues**: one sand accent on warm charcoal; green/amber/red are reserved for pass/warning/gap and always paired with text or icons. Agents are told apart by name and icon, not hue. Skip link, visible focus ring, `prefers-reduced-motion` support, dialog roles and labelled controls.
 
 ### 🎯 Problem Statement Alignment
 - Demonstrates 100% of all required features, highlighting the exact sample scenario (Python + SQL + HTML student targeting Full Stack Developer) with adaptive remediation.

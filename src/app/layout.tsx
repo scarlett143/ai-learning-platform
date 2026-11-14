@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SkillBridge AI — Adaptive Learning Platform",
-  description: "Agentic upskilling: skill-gap analysis, personalized roadmaps, assessments and an adaptive remediation loop.",
+  title: "SkillBridge — adaptive learning paths",
+  description: "Find your skill gaps, get a step-by-step learning path, and have it adjust when a quiz shows a weak spot.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -106,7 +106,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-accent-500 selection:text-stone-950">
+      <a href="#main" className="skip-link">Skip to main content</a>
       {/* Header */}
       <Header
         currentRoleId={profile.targetRoleId}
@@ -116,7 +117,7 @@ export default function Home() {
       />
 
       {/* Main Split-Layout Dashboard */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <main id="main" className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column (60%): Profile Overview + Visual Learning Roadmap */}
         <section className="lg:col-span-7 space-y-6">
           <ProfileOverview profile={profile} gapReport={gapReport} />
