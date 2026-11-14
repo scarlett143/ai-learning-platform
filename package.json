@@ -8,7 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "tsx scripts/run-e2e.ts",
+    "test:e2e:tier1": "tsx scripts/run-e2e.ts --tier=1",
+    "test:e2e:tier2": "tsx scripts/run-e2e.ts --tier=2",
+    "test:e2e:tier3": "tsx scripts/run-e2e.ts --tier=3",
+    "test:e2e:tier4": "tsx scripts/run-e2e.ts --tier=4",
+    "test:e2e:vitest": "vitest run tests/e2e"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -30,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
+    "tsx": "^4.19.2",
     "typescript": "^5",
     "vitest": "^3.0.0"
   }
