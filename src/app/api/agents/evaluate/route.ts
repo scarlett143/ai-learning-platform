@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AssessmentEvaluatorAgent } from '@/services/agents/assessment-evaluator';
 import { QuizQuestion } from '@/types';
+import { rateLimited, tooLarge } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
+  if (rateLimited(req, 'evaluate')) return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  if (tooLarge(req)) return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
   try {
     const body = await req.json().catch(() => null);
     if (!body || typeof body !== 'object') {

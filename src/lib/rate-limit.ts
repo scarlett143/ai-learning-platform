@@ -23,6 +23,16 @@ export function clientKey(headers: Headers): string {
   return headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
 }
 
+/** True when this caller has exceeded `limit` requests/minute on `scope` (each route has its own bucket). */
+export function rateLimited(req: Request, scope: string, limit = 60): boolean {
+  return !allowRequest(`${scope}:${clientKey(req.headers)}`, limit);
+}
+
+/** True when the declared body size exceeds `max` bytes (cheap check before parsing JSON). */
+export function tooLarge(req: Request, max = 100_000): boolean {
+  return Number(req.headers.get('content-length') ?? 0) > max;
+}
+
 export function resetRateLimit(): void {
   hits.clear();
 }

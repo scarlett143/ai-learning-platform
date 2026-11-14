@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { NextRequest } from 'next/server';
 import { POST as evaluate } from '@/app/api/agents/evaluate/route';
 import { POST as chat } from '@/app/api/chat/route';
+import { POST as analyze } from '@/app/api/agents/analyze/route';
+import { POST as plan } from '@/app/api/agents/plan/route';
 
 const req = (url: string, body: unknown) =>
   new NextRequest(`http://localhost${url}`, {
@@ -37,5 +39,20 @@ describe('API input validation', () => {
     expect(res.status).toBe(200);
     expect(res.headers.get('x-llm-provider')).toBe('mock');
     expect((await res.text()).length).toBeGreaterThan(20);
+  });
+  it('analyze: rejects non-array and oversized skill lists, accepts a valid profile', async () => {
+    expect((await analyze(req('/api/agents/analyze', { skills: 'x' }))).status).toBe(400);
+    expect((await analyze(req('/api/agents/analyze', { skills: new Array(201).fill({}) }))).status).toBe(400);
+    expect((await analyze(req('/api/agents/analyze', '{bad json'))).status).toBe(400);
+  });
+  it('plan: rejects malformed reports', async () => {
+    expect((await plan(req('/api/agents/plan', { missingSkills: 'nope' }))).status).toBe(400);
+    expect((await plan(req('/api/agents/plan', { missingSkills: new Array(201).fill({}) }))).status).toBe(400);
+  });
+  it('rejects oversized request bodies with 413 before parsing', async () => {
+    const big = new NextRequest('http://localhost/api/agents/analyze', {
+      method: 'POST', headers: { 'content-type': 'application/json', 'content-length': '500000' }, body: '{}',
+    });
+    expect((await analyze(big)).status).toBe(413);
   });
 });

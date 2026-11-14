@@ -117,7 +117,7 @@ flowchart TD
 ### 🛡️ Security
 - **Zero Credential Leakage**: `.env*` files are strictly excluded via `.gitignore`; `.env.example` provides safe parameter templates.
 - **Client/Server Boundary**: API keys and model calls are restricted to server-side Route Handlers.
-- **Safe State Handling**: The public chat endpoint is rate-limited per IP (20 requests/minute), responses carry security headers (nosniff, frame deny, referrer and permissions policy), and API routes validate payload shape and size (e.g. chat messages capped at 2,000 chars, equal-length answer arrays) and return generic error messages instead of internals.
+- **Safe State Handling**: All public API routes are rate-limited per IP (chat 20/min, agent routes 60/min) with request-size caps (413) and strict payload shape checks (400), responses carry security headers (nosniff, frame deny, referrer and permissions policy), and API routes validate payload shape and size (e.g. chat messages capped at 2,000 chars, equal-length answer arrays) and return generic error messages instead of internals.
 
 ### ⚡ Efficiency
 - **Lightweight Runtime**: Standalone Next.js container output (~100 MB footprint vs ~1 GB typical images).
@@ -125,7 +125,7 @@ flowchart TD
 - **Fast Local Storage**: Instant synchronous in-memory and LocalStorage access with zero network latency.
 
 ### 🧪 Testing & Verification
-- **157 deterministic tests** (120 four-tier E2E + unit + API-validation suites), all passing:
+- **160 deterministic tests** (120 four-tier E2E + unit + API-validation suites), all passing:
   - *Tier 1*: Feature Coverage (>=5 tests per core feature).
   - *Tier 2*: Boundary & Corner Cases (>=5 tests per boundary area, including 69% vs 70% threshold transitions).
   - *Tier 3*: Cross-Feature Combinations (career pivots during remediation, preset resets).

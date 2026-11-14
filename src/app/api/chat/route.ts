@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { LLMGateway } from '@/services/llm';
 import { AgentEventBus } from '@/lib/event-bus';
-import { allowRequest, clientKey } from '@/lib/rate-limit';
+import { rateLimited, tooLarge } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
-  if (!allowRequest(clientKey(req.headers))) {
+  if (tooLarge(req, 20_000)) return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
+  if (rateLimited(req, 'chat', 20)) {
     return NextResponse.json({ error: 'Too many requests. Please wait a minute.' }, { status: 429 });
   }
   try {
