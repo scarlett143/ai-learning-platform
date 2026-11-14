@@ -17,7 +17,7 @@ const AGENT_BADGES: Record<AgentRoleName, { bg: string; text: string; border: st
 
 export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
   return (
-    <div className="bg-card border border-border rounded-2xl p-4 flex flex-col h-[320px] shadow-sm">
+    <div className="bg-card border border-border rounded-lg p-4 flex flex-col h-[320px] shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
             return (
               <div
                 key={evt.id}
-                className="p-2.5 rounded-xl bg-muted/40 border border-border space-y-1 hover:border-border-active transition"
+                className="p-2.5 rounded-md bg-muted/40 border border-border space-y-1 hover:border-border-active transition"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span

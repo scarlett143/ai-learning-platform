@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Target, CheckCircle2, AlertTriangle, Award, FolderGit2 } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Award, FolderGit2 } from 'lucide-react';
 import { LearnerProfile, GapAnalysisReport } from '@/types';
 
 interface ProfileOverviewProps {
@@ -10,45 +10,8 @@ interface ProfileOverviewProps {
 }
 
 export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
-  const readiness = gapReport?.readinessScore ?? 25;
-
   return (
-    <div className="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-5">
-      {/* Learner Info Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-foreground">{profile.name}</h2>
-            
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
-            <Target className="h-3.5 w-3.5 text-accent-400" />
-            <span>Working toward:</span>
-            <span className="font-semibold text-foreground">{gapReport?.targetRoleName || profile.targetRoleId}</span>
-          </div>
-        </div>
-
-        {/* Readiness Meter */}
-        <div className="flex items-center gap-3 bg-muted/50 px-3.5 py-2 rounded-xl border border-border">
-          <div className="text-right">
-            <div className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Role readiness</div>
-            <div className="text-lg font-black text-foreground">{readiness}%</div>
-          </div>
-          <div className="w-16 bg-muted rounded-full h-2.5 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-700 ${
-                readiness >= 70
-                  ? 'bg-emerald-500'
-                  : readiness >= 40
-                  ? 'bg-amber-500'
-                  : 'bg-accent-500'
-              }`}
-              style={{ width: `${Math.max(readiness, 5)}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
+    <div className="bg-card border border-border rounded-lg p-5 shadow-sm space-y-5">
       {/* Competency Gap Analysis Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Identified Missing Skills (Gaps) */}
@@ -66,7 +29,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
               gapReport.missingSkills.map((gap, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/5 border border-amber-500/15 text-xs"
+                  className="flex items-center justify-between p-2.5 rounded-md bg-amber-500/5 border border-amber-500/15 text-xs"
                 >
                   <div className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
@@ -81,7 +44,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
                 </div>
               ))
             ) : (
-              <div className="p-3 text-xs text-muted-foreground italic bg-muted/30 rounded-xl">
+              <div className="p-3 text-xs text-muted-foreground italic bg-muted/30 rounded-md">
                 Analyzing your skills...
               </div>
             )}
@@ -102,7 +65,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
             {profile.skills.map(s => (
               <div
                 key={s.id}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/15 text-xs"
+                className="flex items-center justify-between p-2.5 rounded-md bg-emerald-500/5 border border-emerald-500/15 text-xs"
               >
                 <div className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />

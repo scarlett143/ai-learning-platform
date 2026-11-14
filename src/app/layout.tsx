@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SkillBridge — adaptive learning paths",
+  title: "SkillBridge: adaptive learning paths",
   description: "Find your skill gaps, get a step-by-step learning path, and have it adjust when a quiz shows a weak spot.",
 };
 

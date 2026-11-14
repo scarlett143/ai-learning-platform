@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { NextStepCard } from '@/components/NextStepCard';
+import { Overview } from '@/components/Overview';
 import { Header } from '@/components/Header';
 import { ProfileOverview } from '@/components/ProfileOverview';
 import { RoadmapView } from '@/components/RoadmapView';
@@ -26,6 +26,7 @@ export default function Home() {
   const [activeQuizModule, setActiveQuizModule] = useState<RoadmapModule | null>(null);
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [isLiveFirestore, setIsLiveFirestore] = useState(false);
+  const [activeTab, setActiveTab] = useState<'path' | 'skills' | 'activity'>('path');
 
   // Initialize profile, gap analysis, and roadmap
   useEffect(() => {
@@ -106,34 +107,70 @@ export default function Home() {
     storage.saveRoadmap(newRoadmap);
   };
 
+  const tabs = [
+    { id: 'path', label: 'Learning path' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'activity', label: `Agent activity${feedEvents.length ? ` (${feedEvents.length})` : ''}` },
+  ] as const;
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-accent-500 selection:text-stone-950">
+    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col font-sans selection:bg-accent-500 selection:text-stone-950">
       <a href="#main" className="skip-link">Skip to main content</a>
-      {/* Header */}
       <Header
         currentRoleId={profile.targetRoleId}
         onSelectPreset={handleSelectPreset}
         onOpenCustomModal={() => setIsCustomModalOpen(true)}
-        isLiveFirestore={isLiveFirestore}
       />
 
-      {/* Main Split-Layout Dashboard */}
-      <main id="main" className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column (60%): Profile Overview + Visual Learning Roadmap */}
-        <section className="lg:col-span-7 space-y-6">
-          <NextStepCard roadmap={roadmap} onStart={mod => setActiveQuizModule(mod)} />
-          <ProfileOverview profile={profile} gapReport={gapReport} />
-          <RoadmapView roadmap={roadmap} onTakeAssessment={mod => setActiveQuizModule(mod)} />
-        </section>
+      <main id="main" className="flex-1 max-w-6xl w-full mx-auto px-4 lg:px-8 py-8 space-y-8">
+        <Overview profile={profile} gapReport={gapReport} roadmap={roadmap} onStart={mod => setActiveQuizModule(mod)} />
 
-        {/* Right Column (40%): Live Agent Collaboration Stream + Conversational AI Mentor */}
-        <aside className="lg:col-span-5 space-y-6 sticky top-24">
-          <AgentActivityFeed events={feedEvents} />
-          <AIMentorChat userId={profile.id} onPivotGoal={handleCareerPivot} />
-        </aside>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <section className="lg:col-span-8 space-y-5 min-w-0">
+            <div role="tablist" aria-label="Dashboard sections" className="flex gap-1 border-b border-border">
+              {tabs.map(t => (
+                <button
+                  key={t.id}
+                  role="tab"
+                  id={`tab-${t.id}`}
+                  aria-selected={activeTab === t.id}
+                  aria-controls={`panel-${t.id}`}
+                  onClick={() => setActiveTab(t.id)}
+                  className={`px-3.5 py-2.5 text-sm font-medium -mb-px border-b-2 ${
+                    activeTab === t.id
+                      ? 'border-accent-400 text-foreground'
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+
+            <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+              {activeTab === 'path' && <RoadmapView roadmap={roadmap} onTakeAssessment={mod => setActiveQuizModule(mod)} />}
+              {activeTab === 'skills' && <ProfileOverview profile={profile} gapReport={gapReport} />}
+              {activeTab === 'activity' && <AgentActivityFeed events={feedEvents} />}
+            </div>
+          </section>
+
+          <aside className="lg:col-span-4 lg:sticky lg:top-24" aria-label="AI mentor">
+            <AIMentorChat userId={profile.id} onPivotGoal={handleCareerPivot} />
+          </aside>
+        </div>
       </main>
 
-      {/* Assessment Modal */}
+      <footer className="border-t border-border">
+        <div className="max-w-6xl mx-auto px-4 lg:px-8 py-5 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-2">
+          <span>
+            {isLiveFirestore
+              ? 'Your progress is synced to Firestore.'
+              : 'Your progress is saved in this browser only. Add Firebase credentials to sync it.'}
+          </span>
+          <span>SkillBridge adaptive learning</span>
+        </div>
+      </footer>
+
       <AssessmentModal
         module={activeQuizModule}
         onClose={() => setActiveQuizModule(null)}
@@ -141,7 +178,6 @@ export default function Home() {
         userId={profile.id}
       />
 
-      {/* Custom Learner Onboarding Modal */}
       <CustomOnboardingModal
         isOpen={isCustomModalOpen}
         onClose={() => setIsCustomModalOpen(false)}

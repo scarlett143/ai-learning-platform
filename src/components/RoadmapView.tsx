@@ -27,7 +27,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
 
   if (!roadmap || !roadmap.modules || roadmap.modules.length === 0) {
     return (
-      <div className="bg-card border border-border rounded-2xl p-8 text-center space-y-3">
+      <div className="bg-card border border-border rounded-lg p-8 text-center space-y-3">
         <Sparkles className="h-8 w-8 text-accent-400 mx-auto" />
         <h3 className="text-sm font-semibold text-foreground">Building your learning path</h3>
         <p className="text-xs text-muted-foreground max-w-sm mx-auto">
@@ -71,7 +71,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
           return (
             <div
               key={mod.id}
-              className={`relative ml-10 rounded-2xl border transition-all duration-300 ${
+              className={`relative ml-10 rounded-lg border transition-all duration-300 ${
                 isRemedial
                   ? 'border-amber-500/40 bg-amber-500/5 shadow-md shadow-amber-500/5'
                   : isInProgress
@@ -168,7 +168,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                         <Code2 className="h-3.5 w-3.5 text-accent-400" />
                         Example code
                       </div>
-                      <div className="bg-stone-950 border border-border rounded-xl p-3 font-mono text-[11px] text-stone-200 overflow-x-auto">
+                      <div className="bg-stone-950 border border-border rounded-md p-3 font-mono text-[11px] text-stone-200 overflow-x-auto">
                         <pre>{mod.codeSnippets[0].code}</pre>
                       </div>
                     </div>
@@ -176,7 +176,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
 
                   {/* Practical Exercises */}
                   {mod.exercises && mod.exercises.length > 0 && (
-                    <div className="p-2.5 rounded-xl bg-muted/40 border border-border space-y-1">
+                    <div className="p-2.5 rounded-md bg-muted/40 border border-border space-y-1">
                       <span className="font-semibold text-foreground">Practice exercise</span>
                       <p className="text-muted-foreground">{mod.exercises[0].prompt}</p>
                       {mod.exercises[0].solutionHint && (
@@ -190,7 +190,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
                     <button
                       onClick={() => onTakeAssessment(mod)}
                       disabled={isLocked}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs transition shadow-sm ${
+                      className={`flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-xs transition shadow-sm ${
                         isInProgress || isRemedial
                           ? 'bg-accent-400 hover:bg-accent-300 text-stone-950 shadow-accent-500/20'
                           : isCompleted

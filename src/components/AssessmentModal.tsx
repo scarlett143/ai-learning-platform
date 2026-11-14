@@ -57,7 +57,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-card border border-border rounded-lg w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div>
@@ -79,7 +79,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
           {/* Result Banner if already evaluated */}
           {result && (
             <div
-              className={`p-4 rounded-xl border space-y-2 ${
+              className={`p-4 rounded-md border space-y-2 ${
                 result.passed
                   ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
                   : 'bg-amber-500/10 border-amber-500/30 text-amber-300'
@@ -95,7 +95,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                   <span>
                     {result.passed
                       ? `Passed with ${result.score}% Score!`
-                      : `Score: ${result.score}% — Below 70% Benchmark`}
+                      : `Score: ${result.score}%. Below the 70% pass mark`}
                   </span>
                 </div>
                 <span className="font-mono text-xs uppercase px-2 py-0.5 rounded bg-stone-950/40">
@@ -112,7 +112,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
             const answerDetail = result?.answers[qIdx];
 
             return (
-              <div key={q.id} className="p-4 rounded-xl bg-muted/30 border border-border space-y-3">
+              <div key={q.id} className="p-4 rounded-md bg-muted/30 border border-border space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <span className="font-semibold text-foreground text-sm">
                     {qIdx + 1}. {q.prompt}
@@ -187,14 +187,14 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
               <button
                 onClick={handleSubmit}
                 disabled={!allAnswered || isSubmitting}
-                className="px-5 py-2 rounded-xl bg-accent-400 hover:bg-accent-300 disabled:opacity-50 text-stone-950 font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-50 text-stone-950 font-semibold text-xs transition shadow-sm"
               >
                 Submit for Evaluation
               </button>
             ) : (
               <button
                 onClick={onClose}
-                className="px-5 py-2 rounded-xl bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold text-xs transition shadow-sm"
+                className="px-5 py-2 rounded-md bg-accent-400 hover:bg-accent-300 text-stone-950 font-semibold text-xs transition shadow-sm"
               >
                 Return to Roadmap
               </button>

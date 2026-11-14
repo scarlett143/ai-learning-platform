@@ -109,7 +109,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
   ];
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-4 flex flex-col h-[400px] shadow-sm">
+    <div className="bg-card border border-border rounded-lg p-4 flex flex-col h-[400px] shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
@@ -141,7 +141,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
                 {isUser ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
               </div>
               <div
-                className={`p-3 rounded-2xl max-w-[85%] leading-relaxed ${
+                className={`p-3 rounded-lg max-w-[85%] leading-relaxed ${
                   isUser
                     ? 'bg-accent-600 text-stone-950 rounded-tr-none'
                     : 'bg-muted/50 border border-border text-foreground rounded-tl-none'
@@ -188,13 +188,13 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
           onChange={e => setInput(e.target.value)}
           placeholder="Ask a question or request study advice..."
           disabled={isStreaming}
-          className="flex-1 bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-500 transition"
+          className="flex-1 bg-muted/50 border border-border rounded-md px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-500 transition"
         />
         <button
           type="submit"
           aria-label="Send message"
           disabled={!input.trim() || isStreaming}
-          className="p-2 rounded-xl bg-accent-400 hover:bg-accent-300 disabled:opacity-40 text-stone-950 transition shadow-sm"
+          className="p-2 rounded-md bg-accent-400 hover:bg-accent-300 disabled:opacity-40 text-stone-950 transition shadow-sm"
         >
           <Send className="h-4 w-4" />
         </button>
