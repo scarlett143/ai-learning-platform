@@ -117,7 +117,7 @@ flowchart TD
 ### 🛡️ Security
 - **Zero Credential Leakage**: `.env*` files are strictly excluded via `.gitignore`; `.env.example` provides safe parameter templates.
 - **Client/Server Boundary**: API keys and model calls are restricted to server-side Route Handlers.
-- **Safe State Handling**: API routes validate payload shape and size (e.g. chat messages capped at 2,000 chars, equal-length answer arrays) and return generic error messages instead of internals.
+- **Safe State Handling**: The public chat endpoint is rate-limited per IP (20 requests/minute), responses carry security headers (nosniff, frame deny, referrer and permissions policy), and API routes validate payload shape and size (e.g. chat messages capped at 2,000 chars, equal-length answer arrays) and return generic error messages instead of internals.
 
 ### ⚡ Efficiency
 - **Lightweight Runtime**: Standalone Next.js container output (~100 MB footprint vs ~1 GB typical images).
@@ -125,7 +125,7 @@ flowchart TD
 - **Fast Local Storage**: Instant synchronous in-memory and LocalStorage access with zero network latency.
 
 ### 🧪 Testing & Verification
-- **148 deterministic tests** (120 four-tier E2E + unit + API-validation suites), all passing:
+- **157 deterministic tests** (120 four-tier E2E + unit + API-validation suites), all passing:
   - *Tier 1*: Feature Coverage (>=5 tests per core feature).
   - *Tier 2*: Boundary & Corner Cases (>=5 tests per boundary area, including 69% vs 70% threshold transitions).
   - *Tier 3*: Cross-Feature Combinations (career pivots during remediation, preset resets).
@@ -134,7 +134,7 @@ flowchart TD
 
 ### ♿ Accessibility (a11y)
 - **High-Density Linear-Style UI**: Engineered with high-contrast text (`#eceef2` on `#0c0e12` canvas in dark mode, `#14171c` on `#f6f7f9` in light mode), clear focus rings, semantic HTML elements, and keyboard navigability.
-- **Restrained palette, non-color cues**: one muted cobalt accent on cool neutrals, with a light/dark toggle (follows the system setting, remembers your choice); green/amber/red are reserved for pass/warning/gap and always paired with text or icons. Agents are told apart by name and icon, not hue. Skip link, visible focus ring, `prefers-reduced-motion` support, dialog roles and labelled controls.
+- **Restrained palette, non-color cues**: one muted cobalt accent on cool neutrals, with a light/dark toggle (follows the system setting, remembers your choice); green/amber/red are reserved for pass/warning/gap and always paired with text or icons. Agents are told apart by name and icon, not hue. Skip link, visible focus ring, focus trapping and restore in dialogs, a live-region chat log, `prefers-reduced-motion` support, dialog roles and labelled controls.
 
 ### 🎯 Problem Statement Alignment
 - Demonstrates 100% of all required features, highlighting the exact sample scenario (Python + SQL + HTML student targeting Full Stack Developer) with adaptive remediation.

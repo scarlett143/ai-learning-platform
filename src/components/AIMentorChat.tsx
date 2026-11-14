@@ -130,14 +130,14 @@ export function AIMentorChat({ userId, context, onPivotGoal }: AIMentorChatProps
           </div>
           <div>
             <h3 className="text-xs font-bold text-foreground">AI Mentor</h3>
-            <span className="text-[10px] text-accent-400">Ask anything about your path</span>
+            <span className="text-[11px] text-accent-400">Ask anything about your path</span>
           </div>
         </div>
-        <span className="text-[10px] text-muted-foreground">{provider === 'gemini' ? 'Powered by Gemini' : provider ? 'Demo mode' : ''}</span>
+        <span className="text-[11px] text-muted-foreground">{provider === 'gemini' ? 'Powered by Gemini' : provider ? 'Demo mode' : ''}</span>
       </div>
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto space-y-3 pt-3 pr-1 text-xs">
+      <div role="log" aria-live="polite" aria-label="Conversation with the AI mentor" className="flex-1 overflow-y-auto space-y-3 pt-3 pr-1 text-xs">
         {messages.map(m => {
           const isUser = m.role === 'user';
           return (
@@ -146,7 +146,7 @@ export function AIMentorChat({ userId, context, onPivotGoal }: AIMentorChatProps
               className={`flex items-start gap-2.5 ${isUser ? 'flex-row-reverse' : ''}`}
             >
               <div
-                className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] shrink-0 ${
+                className={`h-6 w-6 rounded-full flex items-center justify-center text-[11px] shrink-0 ${
                   isUser ? 'bg-accent-500/20 text-accent-400' : 'bg-accent-500/20 text-accent-400'
                 }`}
               >
@@ -178,7 +178,7 @@ export function AIMentorChat({ userId, context, onPivotGoal }: AIMentorChatProps
             key={idx}
             disabled={isStreaming}
             onClick={() => handleSend(chip)}
-            className="text-[10px] px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted border border-border transition"
+            className="text-[11px] px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted border border-border transition"
           >
             {chip}
           </button>

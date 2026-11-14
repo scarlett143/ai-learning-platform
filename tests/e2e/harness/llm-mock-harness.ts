@@ -72,7 +72,7 @@ export class MockLLMStreamProvider implements ILLMClient {
     return textToStream;
   }
 
-  public async generateJSON<T>(prompt: string, systemPrompt?: string): Promise<T> {
+  public async generateJSON<T>(prompt: string): Promise<T> {
     if (!prompt || prompt.trim() === '') {
       throw new Error('ValidationError: Prompt cannot be empty for JSON generation');
     }

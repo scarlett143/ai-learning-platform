@@ -18,10 +18,6 @@ const eslintConfig = defineConfig([
     files: ["tests/**"],
     rules: { "@typescript-eslint/no-explicit-any": "off" },
   },
-  {
-    // Init-on-mount effects and Date.now() inside event handlers are intentional here.
-    rules: { "react-hooks/set-state-in-effect": "warn", "react-hooks/purity": "warn" },
-  },
 ]);
 
 export default eslintConfig;

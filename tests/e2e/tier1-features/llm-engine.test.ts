@@ -57,7 +57,7 @@ describe('Tier 1: Feature 8 - Multi-Provider LLM Engine', () => {
     let receivedTokens = 0;
     const text = await context.llm.streamText(
       'Explain JavaScript promises',
-      _chunk => {
+      () => {
         receivedTokens++;
       },
       { temperature: 0.2, maxTokens: 250, systemPrompt: 'You are a senior tutor.' }

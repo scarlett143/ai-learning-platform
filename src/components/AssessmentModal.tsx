@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useEscapeToClose } from '@/lib/use-dialog-close';
+import React, { useRef, useState } from 'react';
+import { useEscapeToClose, useFocusTrap } from '@/lib/use-dialog-close';
 import { X, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { RoadmapModule, QuizQuestion, AssessmentResult } from '@/types';
 import { AssessmentEvaluatorAgent } from '@/services/agents/assessment-evaluator';
@@ -13,24 +13,22 @@ interface AssessmentModalProps {
   userId: string;
 }
 
-export function AssessmentModal({ module, onClose, onComplete, userId }: AssessmentModalProps) {
-  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+/** Mounts a fresh dialog per module (key), so quiz state initializes lazily instead of via an effect. */
+export function AssessmentModal(props: AssessmentModalProps) {
+  if (!props.module) return null;
+  return <AssessmentDialog key={props.module.id} {...props} module={props.module} />;
+}
+
+function AssessmentDialog({ module, onClose, onComplete, userId }: AssessmentModalProps & { module: RoadmapModule }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [questions] = useState<QuizQuestion[]>(() => AssessmentEvaluatorAgent.generateQuiz(module.id, module.title));
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>(() => new Array(questions.length).fill(-1));
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (module) {
-      const generated = AssessmentEvaluatorAgent.generateQuiz(module.id, module.title);
-      setQuestions(generated);
-      setSelectedAnswers(new Array(generated.length).fill(-1));
-      setResult(null);
-    }
-  }, [module]);
 
-  useEscapeToClose(!!module, onClose);
-
-  if (!module) return null;
+  useEscapeToClose(true, onClose);
+  useFocusTrap(dialogRef, true);
 
   const handleSelectOption = (qIdx: number, optIdx: number) => {
     if (result) return; // Prevent changing after submission
@@ -56,13 +54,13 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
   const allAnswered = selectedAnswers.every(ans => ans !== -1);
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="assessment-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-lg w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-accent-500/10 text-accent-400 border border-accent-500/20">
+              <span className="text-[11px] uppercase font-bold px-2 py-0.5 rounded bg-accent-500/10 text-accent-400 border border-accent-500/20">
                 Assessment Evaluator Agent
               </span>
               <span className="text-xs text-muted-foreground">Mastery Benchmark: 70%</span>
@@ -117,7 +115,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                   <span className="font-semibold text-foreground text-sm">
                     {qIdx + 1}. {q.prompt}
                   </span>
-                  <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono shrink-0">
+                  <span className="text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-mono shrink-0">
                     {q.skillName}
                   </span>
                 </div>
@@ -149,7 +147,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                         className={`w-full text-left p-2.5 rounded-lg border transition flex items-center gap-3 text-xs ${optionStyle}`}
                       >
                         <span
-                          className={`h-4 w-4 rounded-full border flex items-center justify-center text-[10px] shrink-0 ${
+                          className={`h-4 w-4 rounded-full border flex items-center justify-center text-[11px] shrink-0 ${
                             isSelected ? 'border-accent-400 bg-accent-400 text-on-accent' : 'border-muted-foreground'
                           }`}
                         >

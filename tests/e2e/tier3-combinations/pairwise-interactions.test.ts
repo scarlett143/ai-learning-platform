@@ -49,7 +49,6 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions - 10 Tests)'
     // F12 (AI Mentor) + F13 (Live Feed / Event Bus) + F8 (LLM Engine)
     await context.journey.applyPreset('fullstack-dev');
 
-    const chatTokens: string[] = [];
     const chatPromise = context.journey.askMentor('Explain closures in JavaScript');
 
     // Concurrently trigger skill analysis which records events
@@ -66,7 +65,7 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions - 10 Tests)'
   it('E2E-T3-XFT-03: Preset Switch During Active Assessment Evaluation', async () => {
     // F7 (Presets) + F11 (Assessment Evaluator) + F6 (Dual-Mode Storage)
     await context.journey.applyPreset('fullstack-dev');
-    const roadmap = await context.storage.getRoadmap(context.userId);
+    await context.storage.getRoadmap(context.userId);
 
     // Partial assessment in progress, then user clicks DevOps preset
     await context.journey.applyPreset('devops-engineer');

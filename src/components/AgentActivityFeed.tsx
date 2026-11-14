@@ -26,7 +26,7 @@ export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
             Live Agent Collaboration Feed
           </h3>
         </div>
-        <span className="flex items-center gap-1.5 text-[10px] text-emerald-400">
+        <span className="flex items-center gap-1.5 text-[11px] text-emerald-400">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           Live Event Bus
         </span>
@@ -59,11 +59,11 @@ export function AgentActivityFeed({ events }: AgentActivityFeedProps) {
               >
                 <div className="flex items-center justify-between gap-2">
                   <span
-                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${style.bg} ${style.text} ${style.border}`}
+                    className={`text-[11px] font-bold uppercase px-2 py-0.5 rounded-md border ${style.bg} ${style.text} ${style.border}`}
                   >
                     {evt.agentName}
                   </span>
-                  <span className="text-[10px] font-mono text-muted-foreground">{timeStr}</span>
+                  <span className="text-[11px] font-mono text-muted-foreground">{timeStr}</span>
                 </div>
                 <p className="text-[11px] text-foreground leading-relaxed">{evt.message}</p>
               </div>

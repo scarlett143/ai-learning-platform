@@ -4,8 +4,6 @@ import {
   getProficiencyWeight,
   getImportanceMultiplier,
   isSkillMatch,
-  PROFICIENCY_WEIGHTS,
-  IMPORTANCE_MULTIPLIERS,
   FULL_STACK_BENCHMARK,
   getBenchmark,
   listBenchmarks,

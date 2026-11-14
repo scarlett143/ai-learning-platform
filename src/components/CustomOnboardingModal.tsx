@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useEscapeToClose, useFocusTrap } from '@/lib/use-dialog-close';
 import { X, UserCheck } from 'lucide-react';
 import { LearnerProfile, ProficiencyLevel } from '@/types';
 
@@ -15,6 +16,10 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
   const [targetRoleId, setTargetRoleId] = useState('fullstack-dev');
   const [skillsInput, setSkillsInput] = useState('Python, SQL, HTML');
   const [proficiency, setProficiency] = useState<ProficiencyLevel>('intermediate');
+
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useEscapeToClose(isOpen, onClose);
+  useFocusTrap(dialogRef, isOpen);
 
   if (!isOpen) return null;
 
@@ -47,7 +52,7 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
   };
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="onboarding-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="onboarding-title" onClick={e => e.target === e.currentTarget && onClose()} className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-lg w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div className="flex items-center gap-2">

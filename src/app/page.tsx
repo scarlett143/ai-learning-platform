@@ -28,7 +28,9 @@ export default function Home() {
   const [isLiveFirestore, setIsLiveFirestore] = useState(false);
   const [activeTab, setActiveTab] = useState<'path' | 'skills' | 'activity'>('path');
 
-  // Initialize profile, gap analysis, and roadmap
+  // Initialize derived state and subscribe to the agent event bus once on mount.
+  // The initial profile is a constant preset, so the missing `profile` dependency is intentional.
+  /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps -- one-time mount initialization */
   useEffect(() => {
     const storage = StorageService.getInstance();
     setIsLiveFirestore(storage.isLiveConnected());
@@ -75,6 +77,7 @@ export default function Home() {
       unsubscribe();
     };
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 
   // Handle Preset Switching
   const handleSelectPreset = async (presetId: string) => {

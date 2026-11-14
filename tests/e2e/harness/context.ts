@@ -1,4 +1,4 @@
-import { IStorageAdapter, ILLMClient, TestContextOptions } from './types';
+import { TestContextOptions } from './types';
 import { LocalStorageMockAdapter } from './storage-harness';
 import { MockLLMStreamProvider } from './llm-mock-harness';
 import { EventBusSpy } from './event-bus-harness';

@@ -5,7 +5,7 @@ import { ILLMClient, LLMOptions } from '@/types';
  * Simulates realistic agent thoughts and conceptual tutoring with domain-aware responses.
  */
 export class MockLLMStreamProvider implements ILLMClient {
-  public async streamText(prompt: string, onToken: (chunk: string) => void, _options?: LLMOptions): Promise<string> {
+  public async streamText(prompt: string, onToken: (chunk: string) => void): Promise<string> {
     const response = this.generateDomainResponse(prompt);
     const words = response.split(' ');
 
@@ -17,7 +17,7 @@ export class MockLLMStreamProvider implements ILLMClient {
     return response;
   }
 
-  public async generateJSON<T>(prompt: string, _systemPrompt?: string): Promise<T> {
+  public async generateJSON<T>(): Promise<T> {
     // Generate valid structured JSON based on prompt intent
     return {} as T;
   }
@@ -123,7 +123,7 @@ export class GeminiProvider implements ILLMClient {
       console.warn('[GeminiProvider] falling back to demo mode:', err instanceof Error ? err.message : err);
       if (out) return out; // already streamed partial text; don't append mock text
       this.usedFallback = true;
-      return this.mock.streamText(prompt, onToken, options);
+      return this.mock.streamText(prompt, onToken);
     }
   }
 

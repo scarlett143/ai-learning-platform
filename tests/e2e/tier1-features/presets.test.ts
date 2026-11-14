@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { TestHarness, TestContext, PRESET_FULL_STACK, PRESET_AI_ML, PRESET_DEVOPS } from '../harness';
+import { TestHarness, TestContext, PRESET_FULL_STACK } from '../harness';
 
 describe('Tier 1: Feature 7 - 1-Click Presets Fixtures', () => {
   let context: TestContext;

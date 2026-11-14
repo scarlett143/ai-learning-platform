@@ -113,20 +113,20 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
 
                     {/* Status & Remedial Badges */}
                     {isRemedial ? (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
                         Review module added
                       </span>
                     ) : isCompleted ? (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                         Completed
                       </span>
                     ) : isInProgress ? (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 border border-accent-500/20">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-accent-500/10 text-accent-400 border border-accent-500/20">
                         Up next
                       </span>
                     ) : (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
                         Locked
                       </span>
                     )}

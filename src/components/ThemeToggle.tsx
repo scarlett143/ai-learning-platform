@@ -1,18 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 type Theme = 'dark' | 'light';
 
-/** Toggles light/dark. Initial value is set before paint by the inline script in layout.tsx. */
+const listeners = new Set<() => void>();
+const subscribe = (cb: () => void) => { listeners.add(cb); return () => { listeners.delete(cb); }; };
+const getSnapshot = (): Theme => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+const getServerSnapshot = (): Theme => 'dark';
+
+/** Toggles light/dark. The initial value is set before paint by the inline script in layout.tsx. */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>('dark');
-
-  useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
-  }, []);
-
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const next: Theme = theme === 'dark' ? 'light' : 'dark';
 
   const toggle = () => {
@@ -20,9 +20,9 @@ export function ThemeToggle() {
     try {
       localStorage.setItem('theme', next);
     } catch {
-      /* storage unavailable: theme still applies for this session */
+      /* storage unavailable: the theme still applies for this session */
     }
-    setTheme(next);
+    listeners.forEach(cb => cb());
   };
 
   return (

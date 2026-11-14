@@ -6,7 +6,6 @@ import {
   GapAnalysisReport,
   RoleBenchmark,
   ProficiencyLevel,
-  Quiz,
   SkillGap,
 } from './types';
 import { TestContext } from './context';

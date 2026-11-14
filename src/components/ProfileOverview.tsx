@@ -21,7 +21,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
               <AlertTriangle className="h-3.5 w-3.5" />
               <span>Skills to learn ({gapReport?.missingSkills.length || 0})</span>
             </h3>
-            <span className="text-[10px] text-muted-foreground">Needed for this role</span>
+            <span className="text-[11px] text-muted-foreground">Needed for this role</span>
           </div>
 
           <div className="space-y-1.5">
@@ -34,7 +34,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
                   <div className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
                     <span className="font-semibold text-foreground">{gap.name}</span>
-                    <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                    <span className="text-[11px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                       {gap.category}
                     </span>
                   </div>
@@ -58,7 +58,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
               <CheckCircle2 className="h-3.5 w-3.5" />
               <span>Skills you already have ({profile.skills.length})</span>
             </h3>
-            <span className="text-[10px] text-muted-foreground">Your starting point</span>
+            <span className="text-[11px] text-muted-foreground">Your starting point</span>
           </div>
 
           <div className="space-y-1.5">
@@ -71,7 +71,7 @@ export function ProfileOverview({ profile, gapReport }: ProfileOverviewProps) {
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   <span className="font-semibold text-foreground">{s.name}</span>
                   {s.category && (
-                    <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                    <span className="text-[11px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                       {s.category}
                     </span>
                   )}
