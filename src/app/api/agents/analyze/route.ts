@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
 
     const report = SkillAnalyzerAgent.analyze(profile);
     return NextResponse.json(report);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Skill analysis failed' }, { status: 500 });
+  } catch (err: unknown) {
+    console.error('[api/agents/analyze]', err);
+    return NextResponse.json({ error: 'Skill analysis failed' }, { status: 500 });
   }
 }

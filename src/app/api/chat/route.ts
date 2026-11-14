@@ -6,8 +6,8 @@ export async function POST(req: NextRequest) {
   try {
     const { message, userId } = await req.json();
 
-    if (!message || typeof message !== 'string') {
-      return NextResponse.json({ error: 'Message content is required' }, { status: 400 });
+    if (!message || typeof message !== 'string' || message.length > 2000) {
+      return NextResponse.json({ error: 'Message is required (max 2000 chars)' }, { status: 400 });
     }
 
     const bus = AgentEventBus.getInstance();
@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (err: unknown) {
-    return NextResponse.json({ error: err instanceof Error ? err.message : 'Mentor streaming failed' }, { status: 500 });
+    console.error('[api/chat]', err);
+    return NextResponse.json({ error: 'Mentor streaming failed' }, { status: 500 });
   }
 }

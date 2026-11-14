@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Sparkles, Database, Layers, CloudCheck, UserPlus, Info } from 'lucide-react';
+import { Sparkles, Database, UserPlus, Info } from 'lucide-react';
 import { ALL_PRESETS } from '@/data/presets';
 
 interface HeaderProps {
@@ -43,6 +43,7 @@ export function Header({ currentRoleId, onSelectPreset, onOpenCustomModal, isLiv
               return (
                 <button
                   key={p.id}
+                  aria-pressed={active}
                   onClick={() => onSelectPreset(p.id)}
                   className={`text-xs font-medium px-3 py-1.5 rounded-md transition-all ${
                     active

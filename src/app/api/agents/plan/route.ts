@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
 
     const roadmap = CurriculumPlannerAgent.planRoadmap(report);
     return NextResponse.json(roadmap);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Roadmap planning failed' }, { status: 500 });
+  } catch (err: unknown) {
+    console.error('[api/agents/plan]', err);
+    return NextResponse.json({ error: 'Roadmap planning failed' }, { status: 500 });
   }
 }

@@ -1,13 +1,13 @@
 import { AgentFeedEvent } from '@/types';
 
-type EventHandler<T = any> = (payload: T) => void | Promise<void>;
+type EventHandler<T = unknown> = (payload: T) => void | Promise<void>;
 
 /**
  * Singleton In-Memory Event Bus for Real-Time Agent Execution Observability
  */
 export class AgentEventBus {
   private static instance: AgentEventBus;
-  private listeners: Map<string, Set<EventHandler>> = new Map();
+  private listeners: Map<string, Set<EventHandler<never>>> = new Map();
   private feedHistory: AgentFeedEvent[] = [];
   private maxHistoryLimit = 200;
 
@@ -20,7 +20,7 @@ export class AgentEventBus {
     return AgentEventBus.instance;
   }
 
-  public subscribe<T = any>(event: string, handler: EventHandler<T>): () => void {
+  public subscribe<T = unknown>(event: string, handler: EventHandler<T>): () => void {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());
     }
@@ -35,8 +35,8 @@ export class AgentEventBus {
     };
   }
 
-  public async publish<T = any>(event: string, payload: T): Promise<void> {
-    const handlersToInvoke: Array<EventHandler> = [];
+  public async publish<T = unknown>(event: string, payload: T): Promise<void> {
+    const handlersToInvoke: Array<EventHandler<never>> = [];
 
     const specific = this.listeners.get(event);
     if (specific) {
@@ -50,7 +50,7 @@ export class AgentEventBus {
 
     for (const handler of handlersToInvoke) {
       try {
-        await handler(payload);
+        await handler(payload as never);
       } catch (err) {
         console.warn(`[AgentEventBus] Handler threw error for event "${event}":`, err);
       }

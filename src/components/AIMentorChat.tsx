@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, Compass } from 'lucide-react';
+import { Send, Bot, User } from 'lucide-react';
 import { AgentMessage } from '@/types';
 import { LLMGateway } from '@/services/llm';
 import { AgentEventBus } from '@/lib/event-bus';
@@ -183,6 +183,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
       >
         <input
           type="text"
+          aria-label="Ask the AI mentor a question"
           value={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Ask a question or request study advice..."
@@ -191,6 +192,7 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
         />
         <button
           type="submit"
+          aria-label="Send message"
           disabled={!input.trim() || isStreaming}
           className="p-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white transition shadow-sm"
         >

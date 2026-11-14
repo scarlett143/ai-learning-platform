@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, AlertTriangle, HelpCircle, ArrowRight, RotateCcw } from 'lucide-react';
+import { X, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { RoadmapModule, QuizQuestion, AssessmentResult } from '@/types';
 import { AssessmentEvaluatorAgent } from '@/services/agents/assessment-evaluator';
 
@@ -53,7 +53,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
   const allAnswered = selectedAnswers.every(ans => ans !== -1);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="assessment-title" className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
@@ -64,9 +64,9 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
               </span>
               <span className="text-xs text-muted-foreground">Mastery Benchmark: 70%</span>
             </div>
-            <h2 className="text-base font-bold text-foreground mt-0.5">{module.title}</h2>
+            <h2 id="assessment-title" className="text-base font-bold text-foreground mt-0.5">{module.title}</h2>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 rounded-lg">
+          <button onClick={onClose} aria-label="Close assessment" className="text-muted-foreground hover:text-foreground p-1 rounded-lg">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -141,6 +141,7 @@ export function AssessmentModal({ module, onClose, onComplete, userId }: Assessm
                       <button
                         key={optIdx}
                         disabled={!!result}
+                        aria-pressed={isSelected}
                         onClick={() => handleSelectOption(qIdx, optIdx)}
                         className={`w-full text-left p-2.5 rounded-lg border transition flex items-center gap-3 text-xs ${optionStyle}`}
                       >

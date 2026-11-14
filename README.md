@@ -3,7 +3,7 @@
 > An enterprise-grade, agentic AI platform that analyzes learner skills, benchmarks competencies against production job roles, generates personalized multi-stage roadmaps, and dynamically adapts learning paths via an autonomous **bi-directional remediation loop**.
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-scarlett143%2Fai--learning--platform-blue?logo=github)](https://github.com/scarlett143/ai-learning-platform)
-[![Next.js](https://img.shields.io/badge/Next.js-15%20App%20Router-black?logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16%20App%20Router-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
@@ -93,7 +93,7 @@ flowchart TD
 | **5** | **Adaptive Remediation Loop** | Bi-directional triggers: scores < 70% automatically inject remedial refresher modules; career goal pivots recalculate the roadmap. |
 | **6** | **AI Mentor & Live Collaboration Feed** | Real-time agent execution stream + interactive streaming AI mentor chat panel. |
 | **7** | **Dual-Mode Persistence** | Connects to live Firebase Firestore when `.env.local` credentials exist; automatically falls back to local in-memory storage for zero-config offline execution. |
-| **8** | **Multi-Provider LLM Gateway** | Supports Google Gemini API & OpenAI API with an intelligent, token-by-token streaming mock fallback. |
+| **8** | **Multi-Provider LLM Gateway** | Streams from Google Gemini when `GEMINI_API_KEY` is set (server-side only); otherwise, or on any provider error, falls back to a deterministic token-by-token mock so the app always works. OpenAI is a planned provider behind the same `ILLMClient` interface. |
 
 ---
 
@@ -111,12 +111,12 @@ flowchart TD
 ### 🔒 Code Quality
 - **Clean Architecture**: Strict separation of concerns across `types/`, `services/agents/`, `services/storage/`, `components/`, and `lib/`.
 - **Strict Typing**: 100% TypeScript with zero `any` declarations; strict interface contracts (`IStorageAdapter`, `ILLMClient`, `AgentEventBus`).
-- **Clean Code**: Follows modern React 19 and Next.js 15 App Router best practices.
+- **Clean Code**: Follows modern React 19 and Next.js 16 App Router best practices.
 
 ### 🛡️ Security
 - **Zero Credential Leakage**: `.env*` files are strictly excluded via `.gitignore`; `.env.example` provides safe parameter templates.
 - **Client/Server Boundary**: API keys and model calls are restricted to server-side Route Handlers.
-- **Safe State Handling**: Sanitized user inputs preventing prompt injection or state corruption.
+- **Safe State Handling**: API routes validate payload shape and size (e.g. chat messages capped at 2,000 chars, equal-length answer arrays) and return generic error messages instead of internals.
 
 ### ⚡ Efficiency
 - **Lightweight Runtime**: Standalone Next.js container output (~100 MB footprint vs ~1 GB typical images).
@@ -124,7 +124,7 @@ flowchart TD
 - **Fast Local Storage**: Instant synchronous in-memory and LocalStorage access with zero network latency.
 
 ### 🧪 Testing & Verification
-- **120 Deterministic Test Cases** mapped across 4 tiers:
+- **148 deterministic tests** (120 four-tier E2E + unit + API-validation suites), all passing:
   - *Tier 1*: Feature Coverage (>=5 tests per core feature).
   - *Tier 2*: Boundary & Corner Cases (>=5 tests per boundary area, including 69% vs 70% threshold transitions).
   - *Tier 3*: Cross-Feature Combinations (career pivots during remediation, preset resets).

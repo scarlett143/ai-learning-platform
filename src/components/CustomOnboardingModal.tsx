@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, UserCheck, Sparkles } from 'lucide-react';
+import { X, UserCheck } from 'lucide-react';
 import { LearnerProfile, ProficiencyLevel } from '@/types';
-import { ALL_PRESETS } from '@/data/presets';
 
 interface CustomOnboardingModalProps {
   isOpen: boolean;
@@ -48,22 +47,23 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="onboarding-title" className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-card border border-border rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/40">
           <div className="flex items-center gap-2">
             <UserCheck className="h-4 w-4 text-cyan-400" />
-            <h2 className="text-sm font-bold text-foreground">Custom Learner Onboarding</h2>
+            <h2 id="onboarding-title" className="text-sm font-bold text-foreground">Custom Learner Onboarding</h2>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 rounded-lg">
+          <button onClick={onClose} aria-label="Close onboarding" className="text-muted-foreground hover:text-foreground p-1 rounded-lg">
             <X className="h-4 w-4" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
           <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Learner Full Name</label>
+            <label htmlFor="learner-name" className="font-semibold text-foreground">Learner Full Name</label>
             <input
+              id="learner-name"
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
@@ -73,8 +73,9 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
           </div>
 
           <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Target Career Goal</label>
+            <label htmlFor="learner-target" className="font-semibold text-foreground">Target Career Goal</label>
             <select
+              id="learner-target"
               value={targetRoleId}
               onChange={e => setTargetRoleId(e.target.value)}
               className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"
@@ -87,8 +88,9 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
           </div>
 
           <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Current Existing Skills (Comma-separated)</label>
+            <label htmlFor="learner-skills" className="font-semibold text-foreground">Current Existing Skills (Comma-separated)</label>
             <input
+              id="learner-skills"
               type="text"
               value={skillsInput}
               onChange={e => setSkillsInput(e.target.value)}
@@ -99,8 +101,9 @@ export function CustomOnboardingModal({ isOpen, onClose, onSubmit }: CustomOnboa
           </div>
 
           <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">General Baseline Proficiency</label>
+            <label htmlFor="learner-level" className="font-semibold text-foreground">General Baseline Proficiency</label>
             <select
+              id="learner-level"
               value={proficiency}
               onChange={e => setProficiency(e.target.value as ProficiencyLevel)}
               className="w-full bg-muted/50 border border-border rounded-xl px-3.5 py-2 text-foreground focus:outline-none focus:border-cyan-500"

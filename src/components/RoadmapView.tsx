@@ -136,7 +136,7 @@ export function RoadmapView({ roadmap, onTakeAssessment }: RoadmapViewProps) {
 
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-muted-foreground font-mono">{mod.estimatedHours}h est.</span>
-                  <button className="text-muted-foreground hover:text-foreground p-1">
+                  <button aria-label={isExpanded ? "Collapse module details" : "Expand module details"} aria-expanded={isExpanded} className="text-muted-foreground hover:text-foreground p-1">
                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </button>
                 </div>

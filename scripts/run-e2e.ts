@@ -55,8 +55,8 @@ function runTierVitest(targetPath: string): { output: VitestOutput | null; rawEr
     const jsonStr = stdout.slice(jsonStart);
     const parsed: VitestOutput = JSON.parse(jsonStr);
     return { output: parsed };
-  } catch (err: any) {
-    return { output: null, rawError: `Failed to parse Vitest JSON: ${err.message}` };
+  } catch (err: unknown) {
+    return { output: null, rawError: `Failed to parse Vitest JSON: ${err instanceof Error ? err.message : String(err)}` };
   }
 }
 

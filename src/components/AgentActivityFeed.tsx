@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Activity, ShieldCheck, Cpu, GitBranch, Terminal } from 'lucide-react';
+import { Terminal } from 'lucide-react';
 import { AgentFeedEvent, AgentRoleName } from '@/types';
 
 interface AgentActivityFeedProps {

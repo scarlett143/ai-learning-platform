@@ -38,7 +38,7 @@ export interface AgentFeedEvent {
   details?: string;
   message?: string; // Backwards compatibility
   metadata?: Record<string, unknown>;
-  payload?: any; // Backwards compatibility
+  payload?: unknown; // Backwards compatibility
   status?: 'pending' | 'success' | 'warning' | 'error';
 }
 

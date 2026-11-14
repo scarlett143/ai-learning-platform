@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Target, CheckCircle2, AlertTriangle, ArrowRight, Award, FolderGit2 } from 'lucide-react';
+import { Target, CheckCircle2, AlertTriangle, Award, FolderGit2 } from 'lucide-react';
 import { LearnerProfile, GapAnalysisReport } from '@/types';
 
 interface ProfileOverviewProps {
