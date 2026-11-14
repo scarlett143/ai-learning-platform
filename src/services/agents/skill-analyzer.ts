@@ -95,6 +95,8 @@ export class SkillAnalyzerAgent {
       readinessScore,
       missingSkills,
       strengths,
+      weaknesses: missingSkills.filter(s => s.gapType === 'depth'),
+      missingGaps: missingSkills.filter(s => s.gapType === 'missing'),
       recommendations,
       analyzedAt: new Date().toISOString(),
     };
