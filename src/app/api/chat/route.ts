@@ -29,24 +29,29 @@ export async function POST(req: NextRequest) {
     const llm = LLMGateway.getInstance();
     const encoder = new TextEncoder();
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          await llm.streamText(
-            message,
-            chunk => {
-              controller.enqueue(encoder.encode(chunk));
-            },
-            { systemPrompt }
-          );
-          controller.close();
-        } catch (streamErr) {
-          controller.error(streamErr);
-        }
-      },
-    });
+    // Start generating, then wait for the first chunk so the provider header reflects who actually answered
+    // (Gemini may fall back to demo mode on quota or key errors).
+    const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
+    const writer = writable.getWriter();
+    let resolveFirst!: () => void;
+    const firstChunk = new Promise<void>(resolve => { resolveFirst = resolve; });
 
-    return new Response(stream, {
+    llm
+      .streamText(
+        message,
+        chunk => {
+          void writer.write(encoder.encode(chunk));
+          resolveFirst();
+        },
+        { systemPrompt }
+      )
+      .then(() => writer.close())
+      .catch(err => writer.abort(err))
+      .finally(resolveFirst);
+
+    await firstChunk;
+
+    return new Response(readable, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'Transfer-Encoding': 'chunked',

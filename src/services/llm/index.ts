@@ -75,10 +75,13 @@ export class MockLLMStreamProvider implements ILLMClient {
  */
 export class GeminiProvider implements ILLMClient {
   private mock = new MockLLMStreamProvider();
+  /** True when the last streamText call fell back to the mock (so callers can report honestly). */
+  private usedFallback = false;
   constructor(private apiKey: string, private model = process.env.GEMINI_MODEL || 'gemini-2.5-flash') {}
 
   public async streamText(prompt: string, onToken: (chunk: string) => void, options?: LLMOptions): Promise<string> {
     let out = '';
+    this.usedFallback = false;
     try {
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:streamGenerateContent?alt=sse`,
@@ -93,7 +96,11 @@ export class GeminiProvider implements ILLMClient {
           signal: AbortSignal.timeout(20000),
         }
       );
-      if (!res.ok || !res.body) throw new Error(`Gemini HTTP ${res.status}`);
+      if (!res.ok || !res.body) {
+        const detail = await res.text().catch(() => '');
+        const reason = (() => { try { return JSON.parse(detail).error?.message as string | undefined; } catch { return undefined; } })();
+        throw new Error(`Gemini HTTP ${res.status}${reason ? `: ${reason.slice(0, 160)}` : ''}`);
+      }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = '';
@@ -111,8 +118,11 @@ export class GeminiProvider implements ILLMClient {
       }
       if (!out) throw new Error('Empty Gemini response');
       return out;
-    } catch {
+    } catch (err) {
+      // Log the reason (status/message only, never the key) so quota or key problems are visible server-side.
+      console.warn('[GeminiProvider] falling back to demo mode:', err instanceof Error ? err.message : err);
       if (out) return out; // already streamed partial text; don't append mock text
+      this.usedFallback = true;
       return this.mock.streamText(prompt, onToken, options);
     }
   }
@@ -138,7 +148,7 @@ export class GeminiProvider implements ILLMClient {
     return JSON.parse(text) as T;
   }
 
-  public getProviderName(): 'gemini' { return 'gemini'; }
+  public getProviderName(): 'gemini' | 'mock' { return this.usedFallback ? 'mock' : 'gemini'; }
 }
 
 /**
