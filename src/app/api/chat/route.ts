@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         'Cache-Control': 'no-cache',
       },
     });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Mentor streaming failed' }, { status: 500 });
+  } catch (err: unknown) {
+    return NextResponse.json({ error: err instanceof Error ? err.message : 'Mentor streaming failed' }, { status: 500 });
   }
 }
