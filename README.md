@@ -17,6 +17,7 @@
 - **Challenge Vertical**: **Personalized AI-Powered Upskilling & Career Roadmapping** (Higher Education & Enterprise Workforce Development).
 - **Target Persona**: Learners, students, and software engineers seeking career transitions (e.g., Python/SQL data developers transitioning to modern Full-Stack Engineering), and organizations aiming to close institutional talent gaps.
 - **Single Public Branch**: All production code is actively committed and verified on the [`main`](https://github.com/scarlett143/ai-learning-platform) branch.
+- **Live Demo (Google Cloud Run)**: [https://skillbridge-ai-639820150255.us-central1.run.app](https://skillbridge-ai-639820150255.us-central1.run.app)
 - **Repository Link**: [https://github.com/scarlett143/ai-learning-platform](https://github.com/scarlett143/ai-learning-platform)
 
 ---
