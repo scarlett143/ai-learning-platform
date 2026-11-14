@@ -46,9 +46,46 @@ export class AdaptiveRemediationEngine {
 
     const failedModule = currentRoadmap.modules[failedIndex];
 
-    // Check if remedial module already exists to prevent duplication
+    // Defect 2 Fix: Enforce strict recursion cap (max 3 remedial iterations).
+    // Case 1: If failedModule is already a remedial module, intensify without creating another nested module
+    if (failedModule.isRemedial) {
+      const updatedAttempt = Math.min(3, (failedModule.remedialAttemptCount || 1) + 1);
+      const updatedModules = currentRoadmap.modules.map(m => {
+        if (m.id === failedModule.id) {
+          return {
+            ...m,
+            status: 'failed' as const,
+            remedialAttemptCount: updatedAttempt,
+            exercises: [
+              ...(m.exercises || []),
+              {
+                id: `rem-drill-${updatedAttempt}`,
+                prompt: `Intensified Remedial Drill (Attempt ${updatedAttempt}/3): Re-verify core fundamentals and debug edge cases.`,
+                solutionHint: 'Focus on stepping through line-by-line execution logic.',
+              },
+            ],
+          };
+        }
+        return m;
+      });
+
+      bus.recordFeedEvent({
+        userId: result.userId,
+        agentName: 'Curriculum Planner',
+        type: 'agent:adaptive:remediation-intensified',
+        message: `Repeated failure on remedial module "${failedModule.title}" (Attempt ${updatedAttempt}/3). Intensifying drills without recursive explosion.`,
+        payload: { moduleId: failedModule.id, attempt: updatedAttempt },
+      });
+
+      return {
+        ...currentRoadmap,
+        modules: updatedModules,
+      };
+    }
+
+    // Case 2: Check if remedial module for this parent already exists in roadmap
     const alreadyHasRemedial = currentRoadmap.modules.some(
-      m => m.isRemedial && m.remedialForSkill === failedModule.title
+      m => m.isRemedial && (m.remedialForSkill === failedModule.title || m.remedialForModuleId === failedModule.id)
     );
 
     if (alreadyHasRemedial) {
@@ -63,6 +100,8 @@ export class AdaptiveRemediationEngine {
       status: 'in_progress',
       isRemedial: true,
       remedialForSkill: failedModule.title,
+      remedialForModuleId: failedModule.id,
+      remedialAttemptCount: 1,
       estimatedHours: 6,
       lessons: [
         { id: 'rem-l1', title: 'Conceptual Pitfalls & Common Anti-Patterns', durationMinutes: 40 },

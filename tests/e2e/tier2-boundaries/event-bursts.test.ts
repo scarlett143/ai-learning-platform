@@ -130,12 +130,12 @@ describe('Tier 2: Boundary Domain 4 - Event Bus & Adaptive Loop Boundaries (10 T
     userBSpy.stopListening();
   });
 
-  it('E2E-T2-BND-32: Recursive Remediation Prevention (Chained Failures)', async () => {
+  it('E2E-T2-BND-32: Recursive Remediation Prevention (Chained Failures & Remedial Recursion Cap)', async () => {
     await context.journey.applyPreset('fullstack-dev');
     const roadmap = await context.storage.getRoadmap(context.userId);
     const targetModuleId = roadmap!.modules[0].id;
 
-    // First failure: inserts remedial module
+    // First failure on parent module: inserts remedial module
     const outcome1 = await context.journey.submitAssessment(targetModuleId, 50.0);
     expect(outcome1.remedialModuleInserted).toBe(true);
 
@@ -146,6 +146,30 @@ describe('Tier 2: Boundary Domain 4 - Event Bus & Adaptive Loop Boundaries (10 T
     const outcome2 = await context.journey.submitAssessment(targetModuleId, 55.0);
     const postRemedialCount = outcome2.updatedRoadmap.modules.filter(m => m.isRemedial).length;
     expect(postRemedialCount).toBe(1);
+
+    // Defect 2 Verification: Repeatedly failing the REMEDIAL module itself
+    // Must NOT explode into nested remedial modules (mod-remedial-remedial...)
+    const remedialModule = outcome2.updatedRoadmap.modules.find(m => m.isRemedial)!;
+    expect(remedialModule).toBeDefined();
+
+    let currentOutcome = outcome2;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      const activeRemedial = currentOutcome.updatedRoadmap.modules.find(m => m.isRemedial)!;
+      currentOutcome = await context.journey.submitAssessment(activeRemedial.id, 45.0);
+
+      // Must never insert a new nested remedial module
+      expect(currentOutcome.remedialModuleInserted).toBe(false);
+
+      // Total remedial modules must strictly remain exactly 1
+      const totalRemedialModules = currentOutcome.updatedRoadmap.modules.filter(m => m.isRemedial);
+      expect(totalRemedialModules.length).toBe(1);
+
+      // Total modules in roadmap must not explode
+      expect(currentOutcome.updatedRoadmap.modules.length).toBe(outcome1.updatedRoadmap.modules.length);
+
+      // Recursion attempt count capped at max 3
+      expect(totalRemedialModules[0].remedialAttemptCount).toBeLessThanOrEqual(3);
+    }
   });
 
   it('E2E-T2-BND-33: Target Role Pivot to Identical Role (No-Op Boundary)', async () => {

@@ -158,8 +158,10 @@ export class AssessmentEvaluatorAgent {
       };
     });
 
-    const score = Math.round((correctCount / questions.length) * 100);
-    const passed = score >= 70; // 70% benchmark threshold
+    const rawScore = (correctCount / questions.length) * 100;
+    const passed = rawScore >= 70.0; // Strict 70.0% benchmark threshold
+    // Ensure scores below 70.0% never round up to 70%
+    const score = passed ? Math.round(rawScore) : Math.min(69, Math.round(rawScore));
 
     const feedback = passed
       ? `Outstanding! You scored ${score}%, demonstrating solid conceptual mastery of ${moduleTitle}. Proceed to the next milestone.`

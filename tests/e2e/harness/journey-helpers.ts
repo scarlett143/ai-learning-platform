@@ -335,8 +335,10 @@ export class AssessmentEvaluatorService {
     score: number;
     submittedAt?: string;
   }): AssessmentResult {
-    const score = Math.max(0, Math.min(100, Math.round(submission.score * 10) / 10));
-    const passed = score >= 70.0;
+    // Strict 70.0% boundary: any score < 70.0 (including 69.999%, 69.9%) strictly fails
+    const rawScore = Math.max(0, Math.min(100, submission.score));
+    const passed = rawScore >= 70.0;
+    const score = rawScore;
     const missedConcepts = !passed ? ['Core Concept Understanding', 'Edge Case Handling'] : [];
 
     const result: AssessmentResult = {
@@ -387,15 +389,48 @@ export class AdaptiveRemediationLoopService {
     const currentMod = modules[modIdx];
 
     if (!result.passed) {
-      // Check if remedial module already exists right after
-      const nextMod = modules[modIdx + 1];
-      if (nextMod && nextMod.isRemedial && nextMod.remedialForModuleId === currentMod.id) {
-        // Already has remedial module; keep it
-        return { updatedRoadmap: currentRoadmap, remedialModuleInserted: true, remedialModule: nextMod };
+      // Defect 2 Fix: Prevent infinite remedial module explosion on repeated failures.
+      // 1. If currentMod is ALREADY a remedial module:
+      if (currentMod.isRemedial) {
+        currentMod.status = 'failed';
+        currentMod.remedialAttemptCount = Math.min(3, (currentMod.remedialAttemptCount || 1) + 1);
+        // Intensify practice exercises rather than spawning a new nested module
+        currentMod.exercises.push({
+          id: `ex-intensified-${currentMod.remedialAttemptCount}`,
+          prompt: `Intensified Remedial Drill (Attempt ${currentMod.remedialAttemptCount}): Deepen conceptual mastery and debug edge cases for ${currentMod.title}.`,
+        });
+
+        bus.recordFeedEvent({
+          userId: currentRoadmap.userId,
+          agentName: 'Curriculum Planner',
+          type: 'remediation:intensified',
+          message: `Learner failed remedial module "${currentMod.title}" (Attempt ${currentMod.remedialAttemptCount}/3). Intensifying drills without recursive explosion.`,
+          metadata: { remedialModuleId: currentMod.id, attempt: currentMod.remedialAttemptCount },
+        });
+
+        const updatedRoadmap: Roadmap = {
+          ...currentRoadmap,
+          modules,
+          updatedAt: new Date().toISOString(),
+        };
+
+        return { updatedRoadmap, remedialModuleInserted: false, remedialModule: currentMod };
       }
 
+      // 2. If a remedial module for this parent module already exists in the roadmap:
+      const existingRemedial = modules.find(
+        m => m.isRemedial && m.remedialForModuleId === currentMod.id
+      );
+      if (existingRemedial) {
+        existingRemedial.remedialAttemptCount = Math.min(3, (existingRemedial.remedialAttemptCount || 1) + 1);
+        return { updatedRoadmap: currentRoadmap, remedialModuleInserted: false, remedialModule: existingRemedial };
+      }
+
+      // 3. First failure of parent module: Create exactly 1 remedial module
       currentMod.status = 'failed';
       const remedialMod = CurriculumPlannerService.createRemedialModule(currentMod, result.missedConcepts);
+      remedialMod.remedialAttemptCount = 1;
+      remedialMod.remedialForModuleId = currentMod.id;
 
       // Insert immediately after failed module
       modules.splice(modIdx + 1, 0, remedialMod);
@@ -434,10 +469,17 @@ export class AdaptiveRemediationLoopService {
         }
       } else {
         currentMod.status = 'completed';
-        // If there was an adjacent remedial module that is now obsolete, we can mark or advance
+        // If there was an adjacent remedial module that is now obsolete, we can advance following module
         const nextMod = modules[modIdx + 1];
-        if (nextMod && !nextMod.isRemedial) {
-          nextMod.status = 'in_progress';
+        if (nextMod) {
+          if (!nextMod.isRemedial) {
+            nextMod.status = 'in_progress';
+          } else {
+            const followingMod = modules[modIdx + 2];
+            if (followingMod) {
+              followingMod.status = 'in_progress';
+            }
+          }
         }
       }
 

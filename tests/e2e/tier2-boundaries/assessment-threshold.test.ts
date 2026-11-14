@@ -13,7 +13,7 @@ describe('Tier 2: Boundary Domain 1 - Assessment Scoring Thresholds (5 Tests)', 
     await context.cleanup();
   });
 
-  it('E2E-T2-BND-01: Strict 69.9% vs 70.0% Boundary Condition', async () => {
+  it('E2E-T2-BND-01: Strict 69.9% and 69.999% vs 70.0% Boundary Condition', async () => {
     await context.journey.applyPreset('fullstack-dev');
     const roadmap = await context.storage.getRoadmap(context.userId);
     const targetModuleId = roadmap!.modules[0].id;
@@ -30,6 +30,24 @@ describe('Tier 2: Boundary Domain 1 - Assessment Scoring Thresholds (5 Tests)', 
 
     const outcome69 = await context.journey.submitAssessment(targetModuleId, 69.9);
     expect(outcome69.remedialModuleInserted).toBe(true);
+
+    // Clean reset for 69.999% boundary precision test (Defect 1 verification)
+    await context.storage.resetToPreset('fullstack-dev', context.userId);
+    const result69999 = AssessmentEvaluatorService.gradeSubmission({
+      userId: context.userId,
+      moduleId: targetModuleId,
+      score: 69.999,
+    });
+    expect(result69999.score).toBe(69.999);
+    expect(result69999.passed).toBe(false);
+    expect(result69999.status).toBe('failed');
+
+    const outcome69999 = await context.journey.submitAssessment(targetModuleId, 69.999);
+    expect(outcome69999.remedialModuleInserted).toBe(true);
+    expect(outcome69999.result.passed).toBe(false);
+    expect(outcome69999.updatedRoadmap.modules[0].status).toBe('failed');
+    // Ensure progression is locked: next module remains locked
+    expect(outcome69999.updatedRoadmap.modules[2].status).toBe('locked');
 
     // Clean reset for 70.0% test
     await context.storage.resetToPreset('fullstack-dev', context.userId);

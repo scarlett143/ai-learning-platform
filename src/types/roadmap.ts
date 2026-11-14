@@ -57,6 +57,7 @@ export interface RoadmapModule {
   remediationTriggeredByModuleId?: string;
   remedialForSkill?: string; // Backwards compatibility
   remedialForModuleId?: string; // Backwards compatibility
+  remedialAttemptCount?: number;
   lessons: Lesson[];
   practicalExercise?: PracticalExercise;
   exercises?: PracticalExercise[]; // Backwards compatibility

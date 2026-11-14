@@ -121,6 +121,7 @@ export interface RoadmapModule {
   quiz?: Quiz;
   order: number;
   remedialForModuleId?: string;
+  remedialAttemptCount?: number;
 }
 
 export interface Roadmap {
