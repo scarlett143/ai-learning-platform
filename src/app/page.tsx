@@ -47,7 +47,31 @@ export default function Home() {
       setFeedEvents(prev => [evt, ...prev.slice(0, 50)]);
     });
 
+    // Restore saved progress (Firestore mode): profile + roadmap come back after a reload.
+    let cancelled = false;
+    if (storage.getMode() === 'firestore') {
+      (async () => {
+        try {
+          const [savedProfile, savedRoadmap] = await Promise.all([
+            storage.getProfile(profile.id),
+            storage.getRoadmap(profile.id),
+          ]);
+          if (cancelled) return;
+          if (savedProfile) {
+            setProfile(savedProfile);
+            setGapReport(SkillAnalyzerAgent.analyze(savedProfile));
+          } else {
+            await storage.saveProfile(profile);
+          }
+          if (savedRoadmap) setRoadmap(savedRoadmap);
+        } catch (err) {
+          console.warn('[Home] Could not restore saved progress:', err);
+        }
+      })();
+    }
+
     return () => {
+      cancelled = true;
       unsubscribe();
     };
   }, []);

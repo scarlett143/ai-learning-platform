@@ -15,11 +15,13 @@ export class StorageService {
 
   public static getInstance(): IStorageAdapter {
     if (!StorageService.instance) {
-      const projectId =
-        typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_FIREBASE_PROJECT_ID : undefined;
+      // Must be the plain `process.env.NEXT_PUBLIC_*` form so Next inlines it into the client bundle.
+      const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+      const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
       const hasValidFirebaseConfig =
         Boolean(projectId) &&
+        Boolean(apiKey) &&
         projectId !== 'demo-project' &&
         projectId !== 'your-project-id' &&
         projectId !== 'test-placeholder';

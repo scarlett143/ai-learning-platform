@@ -1,4 +1,5 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { getAuth, signInAnonymously, Auth } from 'firebase/auth';
 import {
   getFirestore,
   Firestore,
@@ -22,6 +23,8 @@ import { PRESET_FULL_STACK_ALEX, getPresetById } from '@/data/presets';
 export class FirestoreAdapter implements IStorageAdapter {
   private db: Firestore | null = null;
   private app: FirebaseApp | null = null;
+  private auth: Auth | null = null;
+  private uidPromise: Promise<string> | null = null;
   private initialized = false;
 
   constructor() {
@@ -48,11 +51,24 @@ export class FirestoreAdapter implements IStorageAdapter {
 
       this.app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
       this.db = getFirestore(this.app);
+      this.auth = getAuth(this.app);
       this.initialized = true;
     } catch (err) {
       console.warn('[FirestoreAdapter] Failed to initialize Firebase:', err);
       this.initialized = false;
     }
+  }
+
+  /**
+   * Anonymous Firebase Auth gives each browser a private uid (persisted by the SDK across reloads).
+   * All data lives under learners/{uid}, and Firestore rules only allow a user to touch their own subtree.
+   * ponytail: anonymous identity is per-browser; add Google sign-in if cross-device sync is needed.
+   */
+  private uid(): Promise<string> {
+    if (!this.auth) return Promise.reject(new Error('Firebase Auth not initialized'));
+    const auth = this.auth;
+    this.uidPromise ??= signInAnonymously(auth).then(c => c.user.uid);
+    return this.uidPromise;
   }
 
   public isLiveConnected(): boolean {
@@ -66,7 +82,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async getProfile(userId: string): Promise<LearnerProfile | null> {
     if (!this.db) return null;
     try {
-      const docRef = doc(this.db, 'learners', userId);
+      const docRef = doc(this.db, 'learners', await this.uid());
       const snap = await getDoc(docRef);
       if (snap.exists()) {
         return snap.data() as LearnerProfile;
@@ -81,7 +97,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async saveProfile(profile: LearnerProfile): Promise<void> {
     if (!this.db) return;
     try {
-      const docRef = doc(this.db, 'learners', profile.id);
+      const docRef = doc(this.db, 'learners', await this.uid());
       await setDoc(docRef, JSON.parse(JSON.stringify(profile)), { merge: true });
     } catch (err) {
       console.error(`[FirestoreAdapter] saveProfile failed for ${profile.id}:`, err);
@@ -92,7 +108,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async getRoadmap(userId: string): Promise<Roadmap | null> {
     if (!this.db) return null;
     try {
-      const docRef = doc(this.db, 'learners', userId, 'roadmaps', 'current');
+      const docRef = doc(this.db, 'learners', await this.uid(), 'roadmaps', 'current');
       const snap = await getDoc(docRef);
       if (snap.exists()) {
         return snap.data() as Roadmap;
@@ -107,7 +123,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async saveRoadmap(roadmap: Roadmap): Promise<void> {
     if (!this.db) return;
     try {
-      const docRef = doc(this.db, 'learners', roadmap.userId, 'roadmaps', 'current');
+      const docRef = doc(this.db, 'learners', await this.uid(), 'roadmaps', 'current');
       await setDoc(docRef, JSON.parse(JSON.stringify(roadmap)), { merge: true });
     } catch (err) {
       console.error(`[FirestoreAdapter] saveRoadmap failed for ${roadmap.userId}:`, err);
@@ -118,7 +134,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async getAssessments(userId: string): Promise<AssessmentResult[]> {
     if (!this.db) return [];
     try {
-      const colRef = collection(this.db, 'learners', userId, 'assessments');
+      const colRef = collection(this.db, 'learners', await this.uid(), 'assessments');
       const snap = await getDocs(colRef);
       return snap.docs.map(d => d.data() as AssessmentResult);
     } catch (err) {
@@ -130,7 +146,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async saveAssessmentResult(result: AssessmentResult): Promise<void> {
     if (!this.db) return;
     try {
-      const docRef = doc(this.db, 'learners', result.userId, 'assessments', result.id);
+      const docRef = doc(this.db, 'learners', await this.uid(), 'assessments', result.id);
       await setDoc(docRef, JSON.parse(JSON.stringify(result)), { merge: true });
     } catch (err) {
       console.error(`[FirestoreAdapter] saveAssessmentResult failed:`, err);
@@ -141,7 +157,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async getAgentFeed(userId: string): Promise<AgentFeedEvent[]> {
     if (!this.db) return [];
     try {
-      const colRef = collection(this.db, 'learners', userId, 'feedEvents');
+      const colRef = collection(this.db, 'learners', await this.uid(), 'feedEvents');
       const snap = await getDocs(colRef);
       return snap.docs.map(d => d.data() as AgentFeedEvent);
     } catch (err) {
@@ -153,8 +169,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async appendFeedEvent(event: AgentFeedEvent): Promise<void> {
     if (!this.db) return;
     try {
-      const userId = event.userId || 'active-session';
-      const docRef = doc(this.db, 'learners', userId, 'feedEvents', event.id);
+      const docRef = doc(this.db, 'learners', await this.uid(), 'feedEvents', event.id);
       await setDoc(docRef, JSON.parse(JSON.stringify(event)), { merge: true });
     } catch (err) {
       console.error(`[FirestoreAdapter] appendFeedEvent failed:`, err);
@@ -164,7 +179,7 @@ export class FirestoreAdapter implements IStorageAdapter {
   public async appendAgentMessage(message: AgentMessage): Promise<void> {
     if (!this.db) return;
     try {
-      const docRef = doc(this.db, 'learners', message.userId, 'messages', message.id);
+      const docRef = doc(this.db, 'learners', await this.uid(), 'messages', message.id);
       await setDoc(docRef, JSON.parse(JSON.stringify(message)), { merge: true });
     } catch (err) {
       console.error(`[FirestoreAdapter] appendAgentMessage failed:`, err);
