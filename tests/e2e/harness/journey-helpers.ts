@@ -168,6 +168,8 @@ export class SkillAnalyzerService {
       targetRoleName: activeBenchmark.roleName,
       readinessScore,
       missingSkills,
+      weaknesses: missingSkills.filter(s => s.gapType === 'depth'),
+      missingGaps: missingSkills.filter(s => s.gapType === 'missing'),
       strengths,
       recommendations,
       analyzedAt: new Date().toISOString(),

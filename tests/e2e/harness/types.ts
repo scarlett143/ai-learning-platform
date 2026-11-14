@@ -63,11 +63,15 @@ export interface SkillGap {
 }
 
 export interface GapAnalysisReport {
+  roleId?: string;
+  roleTitle?: string;
   userId: string;
   targetRoleId: string;
   targetRoleName: string;
   readinessScore: number; // 0 - 100
   missingSkills: SkillGap[];
+  weaknesses: SkillGap[];
+  missingGaps: SkillGap[];
   strengths: Array<{ name: string; proficiency: ProficiencyLevel; category: string }>;
   recommendations: string[];
   analyzedAt: string;

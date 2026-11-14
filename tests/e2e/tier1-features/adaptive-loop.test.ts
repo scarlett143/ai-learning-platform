@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TestHarness, TestContext } from '../harness';
+import { CurriculumPlannerAgent } from '@/services/agents/curriculum-planner';
 
 describe('Tier 1: Feature 14 - Bi-directional Adaptive Remediation Loop', () => {
   let context: TestContext;
@@ -74,9 +75,22 @@ describe('Tier 1: Feature 14 - Bi-directional Adaptive Remediation Loop', () => 
     expect(pivot.updatedRoadmap.targetRoleId).toBe('aiml-engineer');
     expect(pivot.gapAnalysis.targetRoleName).toBe('AI / ML Engineer');
 
-    // Modules restructured for AI/ML
+    // Modules restructured for AI/ML in harness
     const moduleTitles = pivot.updatedRoadmap.modules.map(m => m.title);
     expect(moduleTitles.some(t => t.includes('Machine Learning') || t.includes('Algebra') || t.includes('PyTorch'))).toBe(true);
+
+    // Defect 3 Verification: Verify production CurriculumPlannerAgent synthesizes non-empty skill modules for aiml-engineer & devops-engineer
+    const aimlRoadmap = CurriculumPlannerAgent.planRoadmap(pivot.gapAnalysis);
+    expect(aimlRoadmap.modules.length).toBeGreaterThan(1); // Not just the single capstone!
+    expect(aimlRoadmap.modules.some(m => m.title.includes('Python') || m.title.includes('PyTorch') || m.title.includes('Linear Algebra'))).toBe(true);
+    expect(aimlRoadmap.modules[aimlRoadmap.modules.length - 1].title).toContain('AI/ML');
+
+    // Also test DevOps pivot in production engine
+    const devopsPivot = await context.journey.pivotCareerGoal('devops-engineer');
+    const devopsRoadmap = CurriculumPlannerAgent.planRoadmap(devopsPivot.gapAnalysis);
+    expect(devopsRoadmap.modules.length).toBeGreaterThan(1);
+    expect(devopsRoadmap.modules.some(m => m.title.includes('Docker') || m.title.includes('Kubernetes') || m.title.includes('CI/CD'))).toBe(true);
+    expect(devopsRoadmap.modules[devopsRoadmap.modules.length - 1].title).toContain('DevOps');
   });
 
   it('E2E-T1-ADAP-05: Remedial Module Re-Test Passing Clears Remediation Flag', async () => {
