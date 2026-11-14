@@ -165,6 +165,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### Enabling the Gemini mentor
+The key is read **server-side only** (`/api/chat`), never sent to the browser and never committed.
+- Local: put `GEMINI_API_KEY=...` in `.env.local` (gitignored), then `npm run dev`.
+- Cloud Run: `gcloud run services update skillbridge-ai --region us-central1 --update-env-vars GEMINI_API_KEY=...` (or mount it from Secret Manager).
+Without a key the mentor runs in labelled "Demo mode"; with a key the header reads "Powered by Gemini" and replies are grounded in the learner's goal, readiness, skill gaps and current module.
+
 ### Running Automated Tests
 ```bash
 # Run unit & integration test suite

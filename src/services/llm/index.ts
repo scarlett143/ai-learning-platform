@@ -117,8 +117,25 @@ export class GeminiProvider implements ILLMClient {
     }
   }
 
+  /** Structured output: asks Gemini for JSON and parses it. Throws on failure so callers can fall back. */
   public async generateJSON<T>(prompt: string, systemPrompt?: string): Promise<T> {
-    return this.mock.generateJSON<T>(prompt, systemPrompt);
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': this.apiKey },
+        body: JSON.stringify({
+          systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined,
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
+        }),
+        signal: AbortSignal.timeout(20000),
+      }
+    );
+    if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+    const text = (await res.json()).candidates?.[0]?.content?.parts?.[0]?.text as string | undefined;
+    if (!text) throw new Error('Empty Gemini response');
+    return JSON.parse(text) as T;
   }
 
   public getProviderName(): 'gemini' { return 'gemini'; }

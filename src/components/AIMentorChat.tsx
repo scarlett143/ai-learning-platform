@@ -3,15 +3,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User } from 'lucide-react';
 import { AgentMessage } from '@/types';
-import { LLMGateway } from '@/services/llm';
 import { AgentEventBus } from '@/lib/event-bus';
 
 interface AIMentorChatProps {
   userId: string;
+  /** Short learner summary (goal, readiness, gaps, current module) so replies are personalized. */
+  context?: string;
   onPivotGoal?: (newRole: string) => void;
 }
 
-export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
+export function AIMentorChat({ userId, context, onPivotGoal }: AIMentorChatProps) {
   const [messages, setMessages] = useState<AgentMessage[]>([
     {
       id: 'm-init',
@@ -19,13 +20,13 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
       role: 'assistant',
       agentName: 'AI Mentor',
       content:
-        "Hello! I am your AI Mentor. I collaborate with the Skill Analyzer, Curriculum Planner, and Assessment Evaluator " +
-        "to guide your journey. Ask me any conceptual question, request study advice, or ask me to pivot your career goal!",
+        "Hi, I am your mentor. Ask me to explain a concept, suggest what to study next, or switch your career goal.",
       timestamp: 0,
     },
   ]);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [provider, setProvider] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,18 +77,29 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
 
     setMessages(prev => [...prev, initialAssistantMsg]);
 
-    const llm = LLMGateway.getInstance();
     let accumulated = '';
 
     try {
-      await llm.streamText(text, chunk => {
-        accumulated += chunk;
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, userId, context }),
+      });
+      if (!res.ok || !res.body) throw new Error(`Chat request failed (${res.status})`);
+      setProvider(res.headers.get('x-llm-provider'));
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        accumulated += decoder.decode(value, { stream: true });
         setMessages(prev =>
           prev.map(m => (m.id === assistantMsgId ? { ...m, content: accumulated } : m))
         );
-      });
+      }
     } catch {
-      accumulated = 'I encountered a temporary connection issue. Please ask again!';
+      accumulated = 'The mentor could not be reached. Check your connection and ask again.';
       setMessages(prev =>
         prev.map(m => (m.id === assistantMsgId ? { ...m, content: accumulated } : m))
       );
@@ -117,11 +129,11 @@ export function AIMentorChat({ userId, onPivotGoal }: AIMentorChatProps) {
             <Bot className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="text-xs font-bold text-foreground">AI Mentor Copilot</h3>
-            <span className="text-[10px] text-accent-400">Collaborative Socratic Tutor</span>
+            <h3 className="text-xs font-bold text-foreground">AI Mentor</h3>
+            <span className="text-[10px] text-accent-400">Ask anything about your path</span>
           </div>
         </div>
-        <span className="text-[10px] text-muted-foreground font-mono">Stream Provider: Active</span>
+        <span className="text-[10px] text-muted-foreground">{provider === 'gemini' ? 'Powered by Gemini' : provider ? 'Demo mode' : ''}</span>
       </div>
 
       {/* Messages Scroll Area */}

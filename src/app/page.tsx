@@ -107,6 +107,15 @@ export default function Home() {
     storage.saveRoadmap(newRoadmap);
   };
 
+  const mentorContext = [
+    `Learner: ${profile.name}`,
+    `Goal: ${gapReport?.targetRoleName ?? profile.targetRoleId}`,
+    `Readiness: ${gapReport?.readinessScore ?? 0}%`,
+    `Skills to learn: ${(gapReport?.missingSkills ?? []).map(g => g.name).slice(0, 8).join(', ') || 'none'}`,
+    `Skills known: ${profile.skills.map(s => s.name).slice(0, 8).join(', ')}`,
+    `Current module: ${roadmap?.modules.find(m => m.status === 'in_progress')?.title ?? 'none'}`,
+  ].join('\n');
+
   const tabs = [
     { id: 'path', label: 'Learning path' },
     { id: 'skills', label: 'Skills' },
@@ -155,7 +164,7 @@ export default function Home() {
           </section>
 
           <aside className="lg:col-span-4 lg:sticky lg:top-24" aria-label="AI mentor">
-            <AIMentorChat userId={profile.id} onPivotGoal={handleCareerPivot} />
+            <AIMentorChat userId={profile.id} context={mentorContext} onPivotGoal={handleCareerPivot} />
           </aside>
         </div>
       </main>

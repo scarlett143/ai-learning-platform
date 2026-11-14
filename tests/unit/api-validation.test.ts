@@ -32,4 +32,10 @@ describe('API input validation', () => {
     expect((await chat(req('/api/chat', { message: '' }))).status).toBe(400);
     expect((await chat(req('/api/chat', { message: 'x'.repeat(2001) }))).status).toBe(400);
   });
+  it('chat: streams a reply and reports the provider (mock without a key)', async () => {
+    const res = await chat(req('/api/chat', { message: 'help with react', userId: 'u1', context: 'Goal: Full Stack' }));
+    expect(res.status).toBe(200);
+    expect(res.headers.get('x-llm-provider')).toBe('mock');
+    expect((await res.text()).length).toBeGreaterThan(20);
+  });
 });
