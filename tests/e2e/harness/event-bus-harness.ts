@@ -106,7 +106,11 @@ export class EventBusSpy {
     const bus = AgentEventBus.getInstance();
     this.unsubscribe = bus.subscribe('*', (payload: any) => {
       // Filter by targetUserId if specified
-      if (!this.targetUserId || !payload.userId || payload.userId === this.targetUserId) {
+      if (this.targetUserId) {
+        if (payload.userId === this.targetUserId) {
+          this.recordedEvents.push(payload);
+        }
+      } else {
         this.recordedEvents.push(payload);
       }
     });
