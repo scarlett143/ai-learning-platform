@@ -64,10 +64,10 @@ tests/e2e/
 │   ├── adaptive-loop.test.ts          # Feature 14 (5 tests)
 │   └── zero-config.test.ts            # Features 1-3, 15-16 (15 tests: UI, Config, Specs, README)
 ├── tier2-boundaries/                  # 35 Tests (>=5/area)
-│   ├── assessment-threshold.test.ts   # 69.9% vs 70.0% boundary, 0%, 100%, malformed (5 tests)
+│   ├── assessment-threshold.test.ts   # Strict 69.9% & 69.999% vs 70.0% boundary, 0%, 100%, malformed (5 tests)
 │   ├── profile-boundaries.test.ts     # Blank, 100+ skills, XSS, duplicates, overlap (10 tests)
 │   ├── storage-boundaries.test.ts     # Fallbacks, quota, corrupt JSON, stream aborts (10 tests)
-│   └── event-bursts.test.ts           # Bursts, faulty listeners, multi-tenant isolation (10 tests)
+│   └── event-bursts.test.ts           # Bursts, recursive remediation cap (chained failures), isolation (10 tests)
 ├── tier3-combinations/                # 10 Tests
 │   └── pairwise-interactions.test.ts  # Cross-feature pairwise interactions (10 tests)
 └── tier4-workloads/                   # 5 Tests
